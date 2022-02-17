@@ -1,6 +1,24 @@
 const Message = require("../models/MessageModel");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/UserModel");
+const Conversation = require("../models/ConversationModel");
+
+const getAllConversations = asyncHandler(async (req, res) => {
+  try {
+    const allConversations = await Conversation.find();
+    if (allConversations) {
+      res.status(201).json({
+        conversations: allConversations,
+      });
+    } else {
+      res.status(404);
+      throw new Error("Conversations not found.");
+    }
+  } catch (err) {
+    res.status(404);
+    throw new Error("Conversations not found.");
+  }
+});
 
 const getConversation = asyncHandler(async (req, res) => {
   try {
@@ -40,6 +58,10 @@ const sendMessage = asyncHandler(async (req, res) => {
     if (message) {
       conversation.messages.push(message);
       await conversation.save();
+
+      res.status(201).json({
+        message: message,
+      });
     } else {
       res.status(400);
       throw new Error("Error occurred while sending the message.");
@@ -50,4 +72,4 @@ const sendMessage = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getConversation, sendMessage };
+module.exports = { getConversation, sendMessage, getAllConversations };
