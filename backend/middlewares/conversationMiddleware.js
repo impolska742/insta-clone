@@ -12,22 +12,24 @@ const createConversation = asyncHandler(async (req, res, next) => {
       throw new Error("User not found.");
     } else {
       const main_user = req.user._id;
+      console.log(main_user);
 
       const conversation = await Conversation.find({
         participants: { $all: [user, main_user] },
       });
 
-      if (conversation) {
+      console.log("YESESES", conversation);
+
+      if (!conversation.length()) {
         req.conversation = conversation;
-        next();
       } else {
         const created_conversation = await Conversation.create({
           participants: [user, main_user],
         });
 
         req.conversation = created_conversation;
-        next();
       }
+      next();
     }
   } catch (error) {
     res.status(401);

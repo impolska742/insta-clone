@@ -1,5 +1,6 @@
 const Message = require("../models/MessageModel");
 const asyncHandler = require("express-async-handler");
+const User = require("../models/UserModel");
 
 const getConversation = asyncHandler(async (req, res) => {
   try {
@@ -19,7 +20,11 @@ const getConversation = asyncHandler(async (req, res) => {
 });
 
 const sendMessage = asyncHandler(async (req, res) => {
+  const user_id = req.params.user_id;
+  const user = await User.findById(user_id);
   const conversation = req.conversation;
+  const main_user = req.user._id;
+
   if (conversation) {
     const { content, media } = req.body;
     const sender = main_user;
