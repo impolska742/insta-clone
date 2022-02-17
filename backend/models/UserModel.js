@@ -24,6 +24,10 @@ const UserSchema = mongoose.Schema({
     type: String,
     default: process.env.TEMP_IMAGE,
   },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   posts: [
     {
       type: mongoose.Schema.Types.ObjectId,

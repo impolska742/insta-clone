@@ -2,6 +2,16 @@ const User = require("../models/UserModel");
 const asyncHandler = require("express-async-handler");
 const generateToken = require("../utils/generateToken");
 
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find();
+  if (users) {
+    res.status(201).json({ users: users });
+  } else {
+    res.status(404);
+    throw new Error("No users found.");
+  }
+});
+
 const registerUser = asyncHandler(async (req, res) => {
   const { name, userName, password, email } = req.body;
 
@@ -84,4 +94,4 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser, loginUser, updateUser };
+module.exports = { registerUser, loginUser, updateUser, getAllUsers };

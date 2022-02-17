@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const PostSchema = mongoose.model(
+const PostSchema = mongoose.Schema(
   {
     photo: {
       type: String,
@@ -16,7 +16,9 @@ const PostSchema = mongoose.model(
       },
     ],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 const Post = mongoose.model("Post", PostSchema);
