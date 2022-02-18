@@ -1,0 +1,11 @@
+@import url("http://fonts.cdnfonts.com/css/billabong");
+
+.header-logo {
+  font-family: "Billabong", sans-serif;
+  letter-spacing: 0.25mm;
+  font-size: 32px !important;
+}
+
+#nav-bar {
+  padding: 5px 0;
+}

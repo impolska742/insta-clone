@@ -1,0 +1,42 @@
+#first-container {
+  margin-top: 50px;
+  border: 1px solid #585757;
+  max-width: 450px;
+  padding: 40px;
+  border-radius: 10px;
+}
+
+#second-container {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-around;
+  margin-top: 20px;
+  border: 1px solid #585757;
+  max-width: 450px;
+  padding: 20px 0;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.bottom-container-btn {
+  margin-right: 30px;
+}
+
+.login-logo {
+  border: none;
+  outline: none;
+  font-family: "Billabong", sans-serif !important;
+  background: none;
+  color: #fff;
+  letter-spacing: 0.25mm;
+  font-size: 54px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-logo:hover,
+.login-logo:focus {
+  transform: scale(1.03);
+}

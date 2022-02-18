@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 const UserSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true,
   },
   userName: {
     type: String,
@@ -32,6 +31,12 @@ const UserSchema = mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Post",
+    },
+  ],
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
   ],
 });
