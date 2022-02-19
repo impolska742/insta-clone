@@ -15,6 +15,18 @@ const PostSchema = mongoose.Schema(
         userName: String,
       },
     ],
+    userName: {
+      type: String,
+      required: true,
+    },
+    imageUrl: {
+      type: String,
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,

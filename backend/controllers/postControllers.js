@@ -2,11 +2,25 @@ const User = require("../models/UserModel");
 const Post = require("../models/PostModel");
 const asyncHandler = require("express-async-handler");
 
-const getAllPosts = asyncHandler(async (req, res) => {
+const allPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find();
+  if (posts) {
+    res.status(201).json({
+      posts: posts,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Posts not found.");
+  }
+});
+
+const getAllUserPosts = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
+  const posts = await Post.find({ user: req.user });
+
   if (user) {
     res.status(201).json({
-      posts: user.posts,
+      posts: posts,
     });
   } else {
     res.status(404);
@@ -28,21 +42,46 @@ const createPost = asyncHandler(async (req, res) => {
     throw new Error("Invalid photo or caption.");
   }
 
+  const userName = user.userName;
+
   const post = await Post.create({
     photo,
     caption,
+    user,
+    userName,
   });
 
   if (post) {
-    user.posts.push(post);
-    await user.save();
-
     res.status(201).json({
       post: post,
     });
   } else {
     res.status(400);
     throw new Error("Error occurred while creating post.");
+  }
+});
+
+const deletePost = asyncHandler(async (req, res) => {
+  const postID = req.params.id;
+  const post = await Post.findById(postID);
+  if (post) {
+    await post.remove();
+    res.json({ message: "Post deleted." });
+  } else {
+    res.status(404);
+    throw new Error("Post not found.");
+  }
+});
+
+const updatePost = asyncHandler(async (req, res) => {
+  const postID = req.params.id;
+  const post = await Post.findById(postID);
+  if (post) {
+    await post.save();
+    res.json({ message: "Post deleted." });
+  } else {
+    res.status(404);
+    throw new Error("Post not found.");
   }
 });
 
@@ -59,4 +98,10 @@ const getParticularPost = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getAllPosts, createPost, getParticularPost };
+module.exports = {
+  getAllUserPosts,
+  createPost,
+  getParticularPost,
+  allPosts,
+  deletePost,
+};

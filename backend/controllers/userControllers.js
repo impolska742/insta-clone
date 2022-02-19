@@ -1,4 +1,5 @@
 const User = require("../models/UserModel");
+const Post = require("../models/PostModel");
 const FriendRequest = require("../models/FriendRequestModel");
 const asyncHandler = require("express-async-handler");
 const generateToken = require("../utils/generateToken");
@@ -7,8 +8,9 @@ const getAllFriendsPosts = asyncHandler(async (req, res) => {
   let allPosts = [];
 
   for (const friend of req.user.friends) {
-    const user = await User.findById(friend);
-    for (const post of user.posts) {
+    const currFriend = await User.findById(friend);
+    const friendPosts = await Post.find({ user: currFriend._id });
+    for (const post of friendPosts) {
       allPosts.push(post);
     }
   }
@@ -183,12 +185,21 @@ const acceptFriendRequest = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Friend request not found.");
   } else {
-    const user = req.user;
-    user.friends.push(request.requester);
-    await user.save();
+    const recipient = await User.findById(req.user._id);
+    const requester = await User.findById(request.requester._id);
+
+    recipient.friends.push(requester);
+    requester.friends.push(recipient);
+
+    await recipient.save();
+    await requester.save();
 
     await request.remove();
-    res.status(200).json({ message: "Friend request accepted." });
+    res.status(200).json({
+      message: `Congratulations you are now friends with ${
+        requester.name ? requester.name : requester.userName
+      }`,
+    });
   }
 });
 
