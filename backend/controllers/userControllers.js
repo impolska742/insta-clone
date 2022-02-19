@@ -3,6 +3,25 @@ const FriendRequest = require("../models/FriendRequestModel");
 const asyncHandler = require("express-async-handler");
 const generateToken = require("../utils/generateToken");
 
+const getAllFriendsPosts = asyncHandler(async (req, res) => {
+  let allPosts = [];
+
+  for (const friend of req.user.friends) {
+    const user = await User.findById(friend);
+    for (const post of user.posts) {
+      allPosts.push(post);
+    }
+  }
+
+  if (allPosts) {
+    res.status(201);
+    res.json({ posts: allPosts });
+  } else {
+    res.status(404);
+    throw new Error("Posts not found.");
+  }
+});
+
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find();
   if (users) {
@@ -190,6 +209,7 @@ module.exports = {
   loginUser,
   updateUser,
   getAllUsers,
+  getAllFriendsPosts,
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
