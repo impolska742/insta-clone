@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Post.css";
 import { useDispatch, useSelector } from "react-redux";
 import Avatar from "@mui/material/Avatar";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Form } from "react-bootstrap";
 import { addCommentAction } from "../../actions/postActions";
 import Loading from "../../components/Loading";
 import SendIcon from "@mui/icons-material/Send";
@@ -20,11 +20,9 @@ const Post = ({
 }) => {
   const [comment, setComment] = useState("");
 
-  let navigate = useNavigate();
-
   const dispatch = useDispatch();
   const addComment = useSelector((state) => state.addComment);
-  const { loading, error, success } = addComment;
+  const { loading, error } = addComment;
 
   const postComment = (e) => {
     e.preventDefault();
@@ -32,10 +30,6 @@ const Post = ({
     dispatch(addCommentAction(comment, postID));
     setComment("");
   };
-
-  useEffect(() => {
-    navigate("/feed");
-  }, [success, navigate]);
 
   return (
     <div className="post-container">
@@ -45,7 +39,7 @@ const Post = ({
         ) : (
           <Avatar className="post-avatar" src={displayPhoto} />
         )}
-        <Link className="post-username-link" to={`/edit-profile/${userID}`}>
+        <Link className="post-username-link" to={`/view-profile/${userID}`}>
           <h5>{userName}</h5>
         </Link>
       </div>
@@ -53,7 +47,7 @@ const Post = ({
       <img className="post-image" src={photo} alt="User friend post" />
 
       <h5 className="post-text">
-        <Link className="post-username-link" to={`/edit-profile/${userID}`}>
+        <Link className="post-username-link" to={`/view-profile/${userID}`}>
           <strong>{userName} </strong>
         </Link>
         <span className="post-caption">{caption}</span>
@@ -61,7 +55,7 @@ const Post = ({
 
       {comments.map(({ comment, userName, _id }) => (
         <div key={_id} className="comment">
-          <Link className="post-username-link" to={`/edit-profile/${userID}`}>
+          <Link className="post-username-link" to={`/view-profile/${userID}`}>
             <strong>{userName} </strong>
           </Link>
           <span>{comment}</span>

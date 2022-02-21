@@ -21,8 +21,6 @@ const EditProfile = () => {
     dispatch(getUserDetails(id));
   }, [dispatch, id]);
 
-  console.log(data);
-
   return (
     <Container>
       <div className="user-profile">

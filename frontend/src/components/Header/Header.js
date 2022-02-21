@@ -1,18 +1,15 @@
 import React from "react";
-import {
-  Container,
-  Form,
-  FormControl,
-  Nav,
-  Navbar,
-  NavDropdown,
-} from "react-bootstrap";
+import { Container, Form, FormControl, Nav, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../actions/userActions";
 import "./Header.css";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { FaFacebookMessenger, FaHeart } from "react-icons/fa";
+import { FaFacebookMessenger } from "react-icons/fa";
+import { BsFillPersonFill } from "react-icons/bs";
+import { BiMessageSquareAdd } from "react-icons/bi";
+import { FiLogOut } from "react-icons/fi";
+import { MdOutlineExplore } from "react-icons/md";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -22,8 +19,10 @@ const Header = () => {
   const { userInfo } = userLogin;
 
   const logoutHandler = () => {
-    dispatch(logout());
-    navigate("/");
+    if (window.confirm("Do you want to logout?")) {
+      dispatch(logout());
+      navigate("/");
+    }
   };
 
   return (
@@ -39,8 +38,8 @@ const Header = () => {
           <>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav className="m-auto">
-                <Form className="d-flex">
+              <Nav className="m-auto" id="header-search">
+                <Form>
                   <FormControl
                     type="search"
                     placeholder="Search"
@@ -51,21 +50,23 @@ const Header = () => {
                 </Form>
               </Nav>
 
-              <Nav>
-                <Nav.Link href="/login">
+              <Nav id="icons-nav">
+                <Nav.Link href="/chat">
                   <FaFacebookMessenger size={25} />
                 </Nav.Link>
-                <Nav.Link href="/login">
-                  <FaHeart size={25} />
+                <Nav.Link href="#">
+                  <BiMessageSquareAdd size={30} />
                 </Nav.Link>
-                <Nav.Link href="/login">Login</Nav.Link>
-                <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="/" onClick={logoutHandler}>
-                    Logout
-                  </NavDropdown.Item>
-                </NavDropdown>
+                <Nav.Link href="#">
+                  <MdOutlineExplore size={30} />
+                </Nav.Link>
+
+                <Nav.Link href="#">
+                  <BsFillPersonFill size={30} />
+                </Nav.Link>
+                <Nav.Link href="#" onClick={logoutHandler}>
+                  <FiLogOut size={30} />
+                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </>

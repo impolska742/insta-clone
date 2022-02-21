@@ -6,6 +6,8 @@ import { getAllPosts } from "../../actions/postActions";
 import Loading from "../../components/Loading";
 import Post from "../Post/Post";
 import "./Feed.css";
+import LandingPageRow from "../../components/LandingPageRow/LandingPageRow";
+import { row2 } from "../../landingPageDetails";
 
 const Feed = () => {
   let navigate = useNavigate();
@@ -28,20 +30,24 @@ const Feed = () => {
   return (
     <Container className="all-posts">
       {loading && <Loading />}
-      {posts?.map((post) => {
-        return (
-          <Post
-            key={post._id}
-            postID={post._id}
-            userName={post?.userName}
-            photo={post.photo}
-            caption={post.caption}
-            comments={post.comments}
-            displayPhoto={post.imageUrl}
-            userID={post.user}
-          />
-        );
-      })}
+      {posts?.length ? (
+        posts?.map((post) => {
+          return (
+            <Post
+              key={post._id}
+              postID={post._id}
+              userName={post?.userName}
+              photo={post.photo}
+              caption={post.caption}
+              comments={post.comments}
+              displayPhoto={post.imageUrl}
+              userID={post.user}
+            />
+          );
+        })
+      ) : (
+        <LandingPageRow row={row2} explore={true} />
+      )}
       {error && (
         <div class="alert alert-dismissible alert-danger">
           <button

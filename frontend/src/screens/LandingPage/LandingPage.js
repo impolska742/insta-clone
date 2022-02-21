@@ -13,13 +13,13 @@ const LandingPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate("/feed");
     }
   }, [userInfo, navigate]);
 
   return (
     <Container>
-      <LandingPageRow row={row1} />
+      <LandingPageRow row={row1} LandingPage={true} />
     </Container>
   );
 };

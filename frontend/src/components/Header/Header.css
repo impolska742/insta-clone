@@ -36,3 +36,13 @@
     width: 120px;
   }
 }
+
+#icons-nav {
+  display: flex;
+  width: 220px;
+  justify-content: space-between;
+}
+
+#header-search {
+  max-width: 300px;
+}

@@ -10,6 +10,7 @@ const {
   getAllFriendRequests,
   getAllFriendsPosts,
   getUserDetails,
+  getAllFriends,
 } = require("../controllers/userControllers");
 const { protect } = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -17,6 +18,7 @@ const router = express.Router();
 router.route("/").get(getAllUsers);
 router.route("/friends-posts").get(protect, getAllFriendsPosts);
 router.route("/:id").get(getUserDetails);
+router.route("/friends").get(protect, getAllFriends);
 
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);

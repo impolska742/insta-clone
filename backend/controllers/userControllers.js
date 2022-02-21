@@ -24,6 +24,25 @@ const getAllFriendsPosts = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllFriends = asyncHandler(async (req, res) => {
+  let userFriends = [];
+
+  console.log(req.user.friends);
+
+  // for (const friend of req.user.friends) {
+  //   const currFriend = await User.findById(friend);
+  //   userFriends.push(currFriend);
+  // }
+
+  if (userFriends) {
+    res.status(201);
+    res.json({ frinds: userFriends });
+  } else {
+    res.status(404);
+    throw new Error("User friends not found.");
+  }
+});
+
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find();
   if (users) {
@@ -238,5 +257,6 @@ module.exports = {
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
+  getAllFriends,
   getAllFriendRequests,
 };
