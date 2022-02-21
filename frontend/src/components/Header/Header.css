@@ -4,9 +4,35 @@
   font-family: "Billabong", sans-serif;
   letter-spacing: 0.25mm;
   font-size: 32px !important;
+  padding: 10px;
+  border-left: 1px solid #222222;
 }
 
 #nav-bar {
   padding: 5px 0;
   margin-bottom: 50px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#header-input {
+  color: white;
+  background-color: #222222;
+}
+
+.header-logo-icon {
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 1000px) {
+  #not-user-nav {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 120px;
+  }
 }

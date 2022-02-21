@@ -215,12 +215,26 @@ const rejectFriendRequest = asyncHandler(async (req, res) => {
   }
 });
 
+const getUserDetails = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  const userPosts = await Post.find({ user: user._id });
+
+  if (user) {
+    res.status(201);
+    res.json({ user: user, posts: userPosts });
+  } else {
+    res.status(404);
+    throw new Error("No user found.");
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
   updateUser,
   getAllUsers,
   getAllFriendsPosts,
+  getUserDetails,
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,

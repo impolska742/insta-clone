@@ -1,0 +1,16 @@
+.avatar {
+  height: 200px !important;
+  width: 200px !important;
+}
+
+@media screen and (max-width: 768px) {
+  .avatar {
+    height: 100px !important;
+    width: 100px !important;
+  }
+}
+
+.user-profile {
+  display: flex;
+  align-items: top;
+}

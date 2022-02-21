@@ -98,10 +98,29 @@ const getParticularPost = asyncHandler(async (req, res) => {
   }
 });
 
+const addComment = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  const userName = req.user.userName;
+  const { comment } = req.body;
+
+  if (post) {
+    post.comments.push({ comment: comment, userName: userName });
+    await post.save();
+
+    res
+      .status(200)
+      .json({ message: `Comment has been added on Post`, post: post });
+  } else {
+    res.status(404);
+    throw new Error("Post not found.");
+  }
+});
+
 module.exports = {
   getAllUserPosts,
   createPost,
   getParticularPost,
   allPosts,
   deletePost,
+  addComment,
 };

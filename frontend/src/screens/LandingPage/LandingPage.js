@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Container } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import LandingPageRow from "../../components/LandingPageRow/LandingPageRow";
+import { row1 } from "../../landingPageDetails";
 
 const LandingPage = () => {
-  return <div>LandingPage</div>;
+  let navigate = useNavigate();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [userInfo, navigate]);
+
+  return (
+    <Container>
+      <LandingPageRow row={row1} />
+    </Container>
+  );
 };
 
 export default LandingPage;

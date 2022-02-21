@@ -18,11 +18,14 @@ const RegisterScreen = () => {
 
   const dispatch = useDispatch();
 
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo: userInfoWhileLoggingIn } = userLogin;
+
   const userCreate = useSelector((state) => state.userCreate);
   const { error, loading, userInfo } = userCreate;
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo || userInfoWhileLoggingIn) {
       navigate("/feed");
     }
 

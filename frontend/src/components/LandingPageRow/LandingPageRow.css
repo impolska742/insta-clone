@@ -1,0 +1,34 @@
+.row-img {
+  width: 100%;
+  max-width: 400px;
+  object-fit: contain;
+}
+
+#landing-page-row {
+  align-items: center;
+  height: 70vh;
+}
+
+@media screen and (max-width: 800px) {
+  #landing-page-row {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #landing-page-row {
+    padding: 0 20px;
+  }
+}
+
+.landing-page-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.login-btn {
+  margin-right: 10px;
+}

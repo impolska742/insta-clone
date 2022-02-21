@@ -9,12 +9,15 @@ const {
   rejectFriendRequest,
   getAllFriendRequests,
   getAllFriendsPosts,
+  getUserDetails,
 } = require("../controllers/userControllers");
 const { protect } = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 router.route("/").get(getAllUsers);
 router.route("/friends-posts").get(protect, getAllFriendsPosts);
+router.route("/:id").get(getUserDetails);
+
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/profile").patch(protect, updateUser);

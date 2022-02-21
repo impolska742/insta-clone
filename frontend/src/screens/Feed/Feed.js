@@ -32,10 +32,13 @@ const Feed = () => {
         return (
           <Post
             key={post._id}
+            postID={post._id}
             userName={post?.userName}
             photo={post.photo}
             caption={post.caption}
             comments={post.comments}
+            displayPhoto={post.imageUrl}
+            userID={post.user}
           />
         );
       })}
