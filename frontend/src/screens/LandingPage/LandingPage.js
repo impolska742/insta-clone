@@ -19,7 +19,7 @@ const LandingPage = () => {
 
   return (
     <Container>
-      <LandingPageRow row={row1} LandingPage={true} />
+      <LandingPageRow row={row1} landingPage={true} />
     </Container>
   );
 };

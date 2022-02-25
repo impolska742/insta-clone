@@ -75,10 +75,13 @@ const deletePost = asyncHandler(async (req, res) => {
 
 const updatePost = asyncHandler(async (req, res) => {
   const postID = req.params.id;
+  const { photo, caption } = req.body;
   const post = await Post.findById(postID);
   if (post) {
+    if (photo) post.photo = photo;
+    if (caption) post.caption = caption;
     await post.save();
-    res.json({ message: "Post deleted." });
+    res.json({ message: "Post updated." });
   } else {
     res.status(404);
     throw new Error("Post not found.");
@@ -104,12 +107,36 @@ const addComment = asyncHandler(async (req, res) => {
   const { comment } = req.body;
 
   if (post) {
-    post.comments.push({ comment: comment, userName: userName });
-    await post.save();
+    if (comment) {
+      post.comments.push({ comment: comment, userName: userName });
+      await post.save();
+    } else {
+      throw new Error("Please enter a comment.");
+    }
 
     res
       .status(200)
       .json({ message: `Comment has been added on Post`, post: post });
+  } else {
+    res.status(404);
+    throw new Error("Post not found.");
+  }
+});
+
+const deleteComment = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const post = await Post.findOne({ user: req.user });
+
+  if (post) {
+    post.comments = post.comments.filter((comment) => {
+      return comment._id.toString() !== req.params.id;
+    });
+
+    await post.save();
+
+    res.status(201).json({
+      post: post,
+    });
   } else {
     res.status(404);
     throw new Error("Post not found.");
@@ -123,4 +150,6 @@ module.exports = {
   allPosts,
   deletePost,
   addComment,
+  deleteComment,
+  updatePost,
 };

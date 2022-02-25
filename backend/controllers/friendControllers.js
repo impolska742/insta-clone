@@ -1,0 +1,131 @@
+const FollowRequest = require("../models/FollowRequestModel");
+const User = require("../models/UserModel");
+const Post = require("../models/PostModel");
+const asyncHandler = require("express-async-handler");
+
+const sendFollowRequest = asyncHandler(async (req, res) => {
+  const requester = req.user;
+  const recipient = await User.findById(req.params.id);
+
+  const alreadyFollowing = requester.friends.includes(recipient);
+
+  if (requester === recipient) {
+    res.status(400);
+    throw new Error("You cannot send follow request to yourself.");
+  }
+
+  if (alreadyFollowing) {
+    res.status(400);
+    throw new Error(
+      `${requester.name ? requester.name : requester.userName} and 
+      ${
+        recipient.name ? recipient.name : recipient.userName
+      } are already friends.`
+    );
+  } else if (!requester || !recipient) {
+    res.status(400);
+    throw new Error("Error occurred while sending request.");
+  }
+
+  const request = await FollowRequest.findOne({
+    requester: requester,
+    recipient: recipient,
+  });
+
+  if (request) {
+    res.status(400);
+    throw new Error("Request already present.");
+  } else {
+    const request = await FollowRequest.create({
+      requester: requester,
+      recipient: recipient,
+    });
+
+    if (request) {
+      res.status(201).json({ request: request });
+    } else {
+      res.status(400);
+      throw new Error("Error occurred while creating new request.");
+    }
+  }
+});
+
+const getAllFollowRequests = asyncHandler(async (req, res) => {
+  const requests = await FollowRequest.find({
+    recipient: req.user,
+  });
+
+  if (requests) {
+    res.status(201);
+    res.json({
+      requests: requests,
+    });
+  } else {
+    res.status(404);
+    throw new Error("No requests found.");
+  }
+});
+
+const acceptFollowRequest = asyncHandler(async (req, res) => {
+  const request = await FollowRequest.findById(req.params.id);
+
+  if (!request) {
+    res.status(404);
+    throw new Error("Friend request not found.");
+  } else {
+    const recipient = await User.findById(req.user._id);
+    const requester = await User.findById(request.requester._id);
+
+    requester.friends.push(recipient);
+
+    await recipient.save();
+    await requester.save();
+
+    await request.remove();
+    res.status(200).json({
+      message: `Congratulations you are now friends with ${
+        requester.name ? requester.name : requester.userName
+      }`,
+    });
+  }
+});
+
+const rejectFollowRequest = asyncHandler(async (req, res) => {
+  const request = await FollowRequest.findById(req.params.id);
+
+  if (!request) {
+    res.status(404);
+    throw new Error("Friend request not found.");
+  } else {
+    await request.remove();
+    res.status(200).json({ message: "Friend request rejected." });
+  }
+});
+
+const getAllFriendsPosts = asyncHandler(async (req, res) => {
+  let allPosts = [];
+
+  for (const friend of req.user.friends) {
+    const currFriend = await User.findById(friend);
+    const friendPosts = await Post.find({ user: currFriend._id });
+    for (const post of friendPosts) {
+      allPosts.push(post);
+    }
+  }
+
+  if (allPosts) {
+    res.status(201);
+    res.json({ posts: allPosts });
+  } else {
+    res.status(404);
+    throw new Error("Posts not found.");
+  }
+});
+
+module.exports = {
+  sendFollowRequest,
+  getAllFriendsPosts,
+  acceptFollowRequest,
+  rejectFollowRequest,
+  getAllFollowRequests,
+};

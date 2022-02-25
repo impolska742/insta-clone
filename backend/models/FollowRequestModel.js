@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const FriendRequestSchema = new mongoose.Schema({
+const FollowRequestSchema = new mongoose.Schema({
   requester: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -13,7 +13,7 @@ const FriendRequestSchema = new mongoose.Schema({
   },
 });
 
-FriendRequestSchema.index({ createdAt: 1 }, { expireAfterSeconds: 864000 });
-const FriendRequest = mongoose.model("FriendRequest", FriendRequestSchema);
+FollowRequestSchema.index({ createdAt: 1 }, { expireAfterSeconds: 864000 });
+const FollowRequest = mongoose.model("FollowRequest", FollowRequestSchema);
 
-module.exports = FriendRequest;
+module.exports = FollowRequest;

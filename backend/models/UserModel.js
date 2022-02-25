@@ -5,6 +5,9 @@ const UserSchema = mongoose.Schema({
   name: {
     type: String,
   },
+  profileStatus: {
+    type: String,
+  },
   userName: {
     type: String,
     required: true,
@@ -14,6 +17,9 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  bio: {
+    type: String,
   },
   password: {
     type: String,
@@ -29,7 +35,7 @@ const UserSchema = mongoose.Schema({
   },
   friends: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
     },
   ],
 });

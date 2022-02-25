@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import "./LoginScreen.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../actions/userActions";
 import Loading from "../../components/Loading";
 
@@ -31,9 +31,9 @@ const LoginScreen = () => {
   return (
     <>
       <Container id="first-container">
-        <button href="/" className="login-logo">
+        <Link to="/" id="login-logo">
           Instagram
-        </button>
+        </Link>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Email address</Form.Label>

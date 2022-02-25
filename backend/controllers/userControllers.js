@@ -1,47 +1,7 @@
 const User = require("../models/UserModel");
 const Post = require("../models/PostModel");
-const FriendRequest = require("../models/FriendRequestModel");
 const asyncHandler = require("express-async-handler");
 const generateToken = require("../utils/generateToken");
-
-const getAllFriendsPosts = asyncHandler(async (req, res) => {
-  let allPosts = [];
-
-  for (const friend of req.user.friends) {
-    const currFriend = await User.findById(friend);
-    const friendPosts = await Post.find({ user: currFriend._id });
-    for (const post of friendPosts) {
-      allPosts.push(post);
-    }
-  }
-
-  if (allPosts) {
-    res.status(201);
-    res.json({ posts: allPosts });
-  } else {
-    res.status(404);
-    throw new Error("Posts not found.");
-  }
-});
-
-const getAllFriends = asyncHandler(async (req, res) => {
-  let userFriends = [];
-
-  console.log(req.user.friends);
-
-  // for (const friend of req.user.friends) {
-  //   const currFriend = await User.findById(friend);
-  //   userFriends.push(currFriend);
-  // }
-
-  if (userFriends) {
-    res.status(201);
-    res.json({ frinds: userFriends });
-  } else {
-    res.status(404);
-    throw new Error("User friends not found.");
-  }
-});
 
 const getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find();
@@ -79,6 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
         userName: user.userName,
         email: user.email,
         token: generateToken(user._id),
+        firstUser: true,
       });
     } else {
       res.status(400);
@@ -134,106 +95,6 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
-const sendFriendRequest = asyncHandler(async (req, res) => {
-  const requester = req.user;
-  const recipient = await User.findById(req.params.id);
-
-  const alreadyFriends = requester.friends.includes(recipient);
-
-  if (requester === recipient) {
-    res.status(400);
-    throw new Error("You cannot send request to yourself.");
-  }
-
-  if (alreadyFriends) {
-    res.status(400);
-    throw new Error(
-      `${requester.name ? requester.name : requester.userName} and 
-      ${
-        recipient.name ? recipient.name : recipient.userName
-      } are already friends.`
-    );
-  } else if (!requester || !recipient) {
-    res.status(400);
-    throw new Error("Error occurred while sending request.");
-  }
-
-  const request = await FriendRequest.findOne({
-    requester: requester,
-    recipient: recipient,
-  });
-
-  if (request) {
-    res.status(400);
-    throw new Error("Request already present.");
-  } else {
-    const request = await FriendRequest.create({
-      requester: requester,
-      recipient: recipient,
-    });
-
-    if (request) {
-      res.status(201).json({ request: request });
-    } else {
-      res.status(400);
-      throw new Error("Error occurred while creating new request.");
-    }
-  }
-});
-
-const getAllFriendRequests = asyncHandler(async (req, res) => {
-  const requests = await FriendRequest.find({
-    recipient: req.user,
-  });
-
-  if (requests) {
-    res.status(201);
-    res.json({
-      requests: requests,
-    });
-  } else {
-    res.status(404);
-    throw new Error("No requests found.");
-  }
-});
-
-const acceptFriendRequest = asyncHandler(async (req, res) => {
-  const request = await FriendRequest.findById(req.params.id);
-
-  if (!request) {
-    res.status(404);
-    throw new Error("Friend request not found.");
-  } else {
-    const recipient = await User.findById(req.user._id);
-    const requester = await User.findById(request.requester._id);
-
-    recipient.friends.push(requester);
-    requester.friends.push(recipient);
-
-    await recipient.save();
-    await requester.save();
-
-    await request.remove();
-    res.status(200).json({
-      message: `Congratulations you are now friends with ${
-        requester.name ? requester.name : requester.userName
-      }`,
-    });
-  }
-});
-
-const rejectFriendRequest = asyncHandler(async (req, res) => {
-  const request = await FriendRequest.findById(req.params.id);
-
-  if (!request) {
-    res.status(404);
-    throw new Error("Friend request not found.");
-  } else {
-    await request.remove();
-    res.status(200).json({ message: "Friend request rejected." });
-  }
-});
-
 const getUserDetails = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
   const userPosts = await Post.find({ user: user._id });
@@ -247,16 +108,32 @@ const getUserDetails = asyncHandler(async (req, res) => {
   }
 });
 
+const getUserFriends = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  console.log(user);
+
+  let userFriends = [];
+
+  for (const friend of req.user.friends) {
+    const currFriend = await User.findById(friend);
+    userFriends.push(currFriend);
+  }
+
+  if (userFriends) {
+    res.status(201).json({
+      friends: userFriends,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Oof loner. No users found.");
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
   updateUser,
   getAllUsers,
-  getAllFriendsPosts,
   getUserDetails,
-  sendFriendRequest,
-  acceptFriendRequest,
-  rejectFriendRequest,
-  getAllFriends,
-  getAllFriendRequests,
+  getUserFriends,
 };

@@ -2,10 +2,15 @@
 
 .header-logo {
   font-family: "Billabong", sans-serif;
-  letter-spacing: 0.25mm;
+  letter-spacing: 0.4mm;
   font-size: 32px !important;
   padding: 10px;
-  border-left: 1px solid #222222;
+}
+
+.break {
+  height: 40px;
+  border-radius: 5px;
+  border-right: 5px solid #494848;
 }
 
 #nav-bar {

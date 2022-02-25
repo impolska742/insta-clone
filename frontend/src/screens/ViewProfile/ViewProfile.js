@@ -9,7 +9,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import "./ViewProfile.css";
 import Post from "../Post/Post";
 
-const EditProfile = () => {
+const ViewProfile = () => {
   const { id } = useParams();
 
   const dispatch = useDispatch();
@@ -41,7 +41,8 @@ const EditProfile = () => {
       </div>
       {data?.posts?.map((post) => (
         <Post
-          key={post._id}
+          key={post?._id}
+          postID={post?._id}
           userName={post?.userName}
           photo={post.photo}
           caption={post.caption}
@@ -54,4 +55,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default ViewProfile;

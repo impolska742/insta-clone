@@ -22,7 +22,7 @@
   margin-right: 30px;
 }
 
-.login-logo {
+#login-logo {
   border: none;
   outline: none;
   font-family: "Billabong", sans-serif !important;
@@ -34,9 +34,10 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  text-decoration: none;
 }
 
-.login-logo:hover,
-.login-logo:focus {
+#login-logo:hover,
+#login-logo:focus {
   transform: scale(1.03);
 }

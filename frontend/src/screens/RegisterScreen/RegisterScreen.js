@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../actions/userActions";
 import Loading from "../../components/Loading";
 import "../LoginScreen/LoginScreen.css";
@@ -39,7 +39,7 @@ const RegisterScreen = () => {
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [navigate, userInfo, message, error]);
+  }, [navigate, userInfo, message, error, userInfoWhileLoggingIn]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,9 +54,9 @@ const RegisterScreen = () => {
   return (
     <>
       <Container id="first-container">
-        <button href="/" className="login-logo">
+        <Link to="/" id="login-logo">
           Instagram
-        </button>
+        </Link>
 
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">

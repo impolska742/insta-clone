@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Form, FormControl, Nav, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,8 +10,12 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { BiMessageSquareAdd } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
 import { MdOutlineExplore } from "react-icons/md";
-
+import CreatePost from "../CreatePost/CreatePost";
 const Header = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -30,6 +34,7 @@ const Header = () => {
       <Container>
         <div className="logo-container">
           <InstagramIcon className="header-logo-icon" fontSize="large" />
+          <div className="break"></div>
           <Navbar.Brand href="/" className="header-logo">
             Instagram
           </Navbar.Brand>
@@ -54,16 +59,19 @@ const Header = () => {
                 <Nav.Link href="/chat">
                   <FaFacebookMessenger size={25} />
                 </Nav.Link>
-                <Nav.Link href="#">
+
+                <Nav.Link href="#" onClick={handleOpen}>
                   <BiMessageSquareAdd size={30} />
                 </Nav.Link>
+                <CreatePost open={open} handleClose={handleClose} />
                 <Nav.Link href="#">
                   <MdOutlineExplore size={30} />
                 </Nav.Link>
 
-                <Nav.Link href="#">
+                <Nav.Link href={`/view-profile/${userInfo.id}`}>
                   <BsFillPersonFill size={30} />
                 </Nav.Link>
+
                 <Nav.Link href="#" onClick={logoutHandler}>
                   <FiLogOut size={30} />
                 </Nav.Link>
