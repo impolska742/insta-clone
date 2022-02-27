@@ -77,6 +77,7 @@ const acceptFollowRequest = asyncHandler(async (req, res) => {
     const requester = await User.findById(request.requester._id);
 
     requester.friends.push(recipient);
+    recipient.followers++;
 
     await recipient.save();
     await requester.save();

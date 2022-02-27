@@ -33,6 +33,10 @@ const UserSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  followers: {
+    type: Number,
+    default: 0,
+  },
   friends: [
     {
       type: mongoose.Schema.Types.ObjectId,

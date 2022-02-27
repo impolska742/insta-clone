@@ -5,6 +5,9 @@ import {
   ALL_POSTS_FAIL,
   ALL_POSTS_REQUEST,
   ALL_POSTS_SUCCESS,
+  DELETE_COMMENT_FAIL,
+  DELETE_COMMENT_REQUEST,
+  DELETE_COMMENT_SUCCESS,
   GET_POST_FAIL,
   GET_POST_REQUEST,
   GET_POST_SUCCESS,
@@ -65,7 +68,7 @@ export const postUpdateReducer = (state = {}, action) => {
     case POST_UPDATE_SUCCESS:
       return { loading: false, success: true, post: action.payload };
     case POST_UPDATE_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, success: false };
     default:
       return state;
   }
@@ -91,6 +94,19 @@ export const addCommentReducer = (state = {}, action) => {
     case ADD_COMMENT_SUCCESS:
       return { loading: false, success: true };
     case ADD_COMMENT_FAIL:
+      return { loading: false, error: action.payload, success: false };
+    default:
+      return state;
+  }
+};
+
+export const deleteCommentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_COMMENT_REQUEST:
+      return { loading: true, success: false };
+    case DELETE_COMMENT_SUCCESS:
+      return { loading: false, success: true };
+    case DELETE_COMMENT_FAIL:
       return { loading: false, error: action.payload, success: false };
     default:
       return state;

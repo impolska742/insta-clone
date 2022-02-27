@@ -18,6 +18,12 @@
   display: flex;
   align-items: center;
   padding: 20px 20px 10px 20px;
+  justify-content: space-between;
+}
+
+.hrr {
+  padding: 0;
+  margin: 0;
 }
 
 .post-avatar {
@@ -28,6 +34,7 @@
 .post-text {
   padding: 20px;
   font-size: 15px;
+  margin: 0;
 }
 
 .post-caption {
@@ -66,15 +73,61 @@
 }
 
 .comment {
-  padding: 0 20px;
-  margin-top: 10px;
+  display: flex;
+  padding: 10px 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.comment:hover {
+  background-color: #222222;
 }
 
 .post-username-link {
   text-decoration: none;
   color: #fff;
+  margin-right: 5px;
 }
 
 .icon {
   color: white;
+}
+
+#comment-input {
+  color: white;
+  background-color: #222222;
+}
+
+.post-preview-image {
+  width: 100%;
+  object-fit: contain;
+  max-width: 300px;
+  max-height: 300px;
+}
+
+#delete-comment-btn {
+  padding: 3px 15px;
+}
+
+.delete-button {
+  margin-left: 5px;
+}
+
+#modal-box {
+  width: 100%;
+  max-width: 600px;
+}
+
+@media screen and (max-width: 600px) {
+  #modal-modal-title {
+    font-size: 25px;
+  }
+
+  .delete-button {
+    font-size: 15px !important;
+  }
+
+  .edit-button {
+    font-size: 15px !important;
+  }
 }

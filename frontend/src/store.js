@@ -3,6 +3,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import {
   addCommentReducer,
+  deleteCommentReducer,
   getAllPostsReducer,
   getPostReducer,
   postCreateReducer,
@@ -28,6 +29,7 @@ const reducer = combineReducers({
   postUpdate: postUpdateReducer,
   userDetail: userDetailsReducer,
   addComment: addCommentReducer,
+  deleteComment: deleteCommentReducer,
 });
 
 const userInfo = localStorage.getItem("userInfo")

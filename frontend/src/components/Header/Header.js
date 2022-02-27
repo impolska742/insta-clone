@@ -11,6 +11,7 @@ import { BiMessageSquareAdd } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
 import { MdOutlineExplore } from "react-icons/md";
 import CreatePost from "../CreatePost/CreatePost";
+
 const Header = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

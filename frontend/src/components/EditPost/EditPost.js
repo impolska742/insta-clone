@@ -1,13 +1,12 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import { Button, Form } from "react-bootstrap";
-import ErrorMessage from "../ErrorMessage";
+import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
+import { updatePost } from "../../actions/postActions";
 import Loading from "../Loading";
-import { createPost } from "../../actions/postActions";
+import ErrorMessage from "../ErrorMessage";
 import { postDetails } from "../../util";
 
 const style = {
@@ -21,27 +20,35 @@ const style = {
   p: 4,
 };
 
-const CreatePost = ({ open, handleClose }) => {
+const EditPost = ({
+  open,
+  handleClose,
+  prevPhoto,
+  prevCaption,
+  setPrevPhoto,
+  setPrevCaption,
+  postID,
+}) => {
   const [photoMessage, setPhotoMessage] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [caption, setCaption] = useState("");
-
-  const dispatch = useDispatch();
-  const postCreate = useSelector((state) => state.postCreate);
-
-  const { loading, success, error } = postCreate;
 
   const resetFields = () => {
-    setCaption("");
-    setPhoto("");
+    setPrevCaption("");
+    setPrevPhoto("");
   };
+
+  const dispatch = useDispatch();
+
+  const postUpdate = useSelector((state) => state.postUpdate);
+  const {
+    loading: postUpdateLoading,
+    success: postUpdateSuccess,
+    error: postUpdateError,
+  } = postUpdate;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!photo || !caption) return;
-    dispatch(createPost(photo, caption));
-
+    if (!prevCaption || !prevPhoto) return;
+    dispatch(updatePost(postID, prevPhoto, prevCaption));
     resetFields();
   };
 
@@ -54,54 +61,54 @@ const CreatePost = ({ open, handleClose }) => {
     >
       <Box id="modal-box" sx={style}>
         <Typography id="modal-modal-title" variant="h4" component="h2">
-          Add a post.
+          Update a post.
         </Typography>
         <hr />
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+          <Form.Group controlId="formFile" className="mb-3">
             <Form.Control
               type="file"
               onChange={(e) =>
-                postDetails(e.target.files[0], setPhoto, setPhotoMessage)
+                postDetails(e.target.files[0], setPrevPhoto, setPhotoMessage)
               }
             />
           </Form.Group>
-          {photo && (
-            <img src={photo} alt="post" className="post-preview-image" />
+          {prevPhoto && (
+            <img src={prevPhoto} alt="post" className="post-preview-image" />
           )}
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Caption.</Form.Label>
             <Form.Control
               as="textarea"
               rows={1}
-              value={caption}
-              onChange={(e) => setCaption(e.target.value)}
+              value={prevCaption}
+              onChange={(e) => setPrevCaption(e.target.value)}
             />
           </Form.Group>
           <hr />
           <Button variant="dark" type="submit" style={{ marginRight: 10 }}>
-            Create Post
+            Update Post
           </Button>
           <Button variant="outline-light" onClick={resetFields}>
             Reset Fields
           </Button>
-          {success && (
+          {postUpdateSuccess && (
             <div class="alert alert-dismissible alert-success">
               <button
                 type="button"
                 class="btn-close"
                 data-bs-dismiss="alert"
               ></button>
-              <strong>Post Created Successfully.</strong>
+              <strong>Post Updated Successfully.</strong>
             </div>
           )}
-          {loading && <Loading />}
-          {photoMessage && <ErrorMessage error={photoMessage} />}
-          {error && <ErrorMessage error={error} />}
+          {postUpdateLoading && <Loading />}
+          {photoMessage && <ErrorMessage>{photoMessage}</ErrorMessage>}
+          {postUpdateError && <ErrorMessage>{postUpdateError}</ErrorMessage>}
         </Form>
       </Box>
     </Modal>
   );
 };
 
-export default CreatePost;
+export default EditPost;
