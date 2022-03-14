@@ -3,6 +3,13 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Button, Form } from "react-bootstrap";
 import Modal from "@mui/material/Modal";
+import { postDetails } from "../../util";
+import Switch from "@mui/material/Switch";
+import ErrorMessage from "../ErrorMessage";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserAction } from "../../actions/userActions";
+import Loading from "../Loading";
+import Success from "../Success";
 
 const style = {
   position: "absolute",
@@ -18,16 +25,30 @@ const style = {
 const EditProfile = ({
   open,
   handleClose,
-  name,
-  userName,
-  userID,
-  bio,
-  displayPhoto,
+  prevName,
+  prevUserName,
+  prevBio,
+  prevPhoto,
+  prevEmail,
+  prevIsPrivate,
 }) => {
-  const [prevUserName, setPrevUserName] = useState("");
-  const [prevBio, setPrevBio] = useState("");
-  const [prevName, setPrevName] = useState("");
-  const [prevDisplayPhoto, setPrevDisplayPhoto] = useState("");
+  const [name, setName] = useState(prevName);
+  const [userName, setUserName] = useState(prevUserName);
+  const [bio, setBio] = useState(prevBio);
+  const [photo, setPhoto] = useState(prevPhoto);
+  const [isPrivate, setIsPrivate] = useState(prevIsPrivate);
+  const [email, setEmail] = useState(prevEmail);
+  const [photoMessage, setPhotoMessage] = useState("");
+
+  const dispatch = useDispatch();
+
+  const userUpdate = useSelector((state) => state.userUpdate);
+  const { loading, error, message } = userUpdate;
+
+  const handleSubmit = () => {
+    console.log(bio, email, userName, photo, name, isPrivate);
+    dispatch(updateUserAction(bio, email, userName, photo, name, isPrivate));
+  };
 
   return (
     <Modal
@@ -41,22 +62,90 @@ const EditProfile = ({
           Edit Profile.
         </Typography>
         <hr />
-        <Form>
-          <Form.Group controlId="formFile" className="mb-3">
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
             <Form.Control
               type="file"
-              //   onChange={(e) => postDetails(e.target.files[0])}
+              onChange={(e) =>
+                postDetails(e.target.files[0], setPhoto, setPhotoMessage)
+              }
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Caption.</Form.Label>
-            <Form.Control as="textarea" rows={1} />
+
+          {photo && (
+            <img src={photo} alt="post" className="post-preview-image" />
+          )}
+
+          {photoMessage && <ErrorMessage>{photoMessage}</ErrorMessage>}
+          <Form.Group className="mb-3 d-flex edit-username-name">
+            <div>
+              <Form.Label>User-name</Form.Label>
+              <Form.Control
+                as="input"
+                rows={1}
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                as="input"
+                rows={1}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
           </Form.Group>
+
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            as="input"
+            type="email"
+            rows={1}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <Form.Group className="mb-3">
+            <Form.Label>Bio</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={1}
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+            />
+          </Form.Group>
+
           <hr />
-          <Button variant="dark" type="submit" style={{ marginRight: 10 }}>
-            Update Post
-          </Button>
+
+          <div className="d-flex">
+            <div className="btns">
+              <Button variant="dark" type="submit" style={{ marginRight: 10 }}>
+                Update Profile
+              </Button>
+              <Button
+                variant="danger"
+                type="submit"
+                style={{ marginRight: 10 }}
+              >
+                Delete Account
+              </Button>
+            </div>
+            <div>
+              <span>Keep the account private?</span>
+              <Switch
+                checked={isPrivate}
+                onChange={() => setIsPrivate(!isPrivate)}
+              />
+            </div>
+          </div>
         </Form>
+
+        {loading && <Loading />}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {message && <Success success={message} />}
       </Box>
     </Modal>
   );

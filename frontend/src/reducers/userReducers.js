@@ -5,6 +5,9 @@ import {
   USER_CREATE_FAIL,
   USER_CREATE_REQUEST,
   USER_CREATE_SUCCESS,
+  USER_DELETE_FAIL,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
   USER_DETAIL_FAIL,
   USER_DETAIL_REQUEST,
   USER_DETAIL_SUCCESS,
@@ -52,6 +55,19 @@ export const userUpdateReducer = (state = {}, action) => {
     case USER_UPDATE_FAIL:
       return { loading: false, error: action.payload, success: false };
     case USER_UPDATE_SUCCESS:
+      return { loading: false, message: action.payload, success: true };
+    default:
+      return state;
+  }
+};
+
+export const userDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_DELETE_REQUEST:
+      return { loading: true };
+    case USER_DELETE_FAIL:
+      return { loading: false, error: action.payload, success: false };
+    case USER_DELETE_SUCCESS:
       return { loading: false, userInfo: action.payload, success: true };
     default:
       return state;

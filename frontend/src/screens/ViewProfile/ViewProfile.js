@@ -21,7 +21,7 @@ const ViewProfile = () => {
   const userDetail = useSelector((state) => state.userDetail);
   const { loading, error, data } = userDetail;
 
-  // const { userName, name, followers, bio, displayPhoto } = data.user;
+  console.log(data);
 
   useEffect(() => {
     dispatch(getUserDetails(id));
@@ -57,30 +57,35 @@ const ViewProfile = () => {
                   Edit Profile
                 </button>
 
-                <EditProfile open={open} handleClose={handleClose} />
+                <EditProfile
+                  open={open}
+                  handleClose={handleClose}
+                  prevBio={data?.user?.bio}
+                  prevName={data?.user?.name}
+                  prevPhoto={data?.user?.displayPhoto}
+                  prevUserName={data?.user?.userName}
+                  prevIsPrivate={data?.user?.isPrivate}
+                  prevEmail={data?.user?.email}
+                />
               </div>
               <div className="user-stats d-flex">
                 <div className="user-stat">
-                  <strong>123</strong> posts
+                  <strong>{data?.posts?.length} </strong> posts
                 </div>
                 <div className="user-stat">
-                  <strong>123</strong> posts
+                  <strong>{data?.user?.followers}</strong> followers
                 </div>
                 <div className="user-stat">
-                  <strong>123</strong> posts
+                  <strong>{data?.user?.friends?.length}</strong> following
                 </div>
               </div>
 
               <div className="display-name">
-                <strong>Random FullName</strong>
+                <strong>{data?.user?.name}</strong>
               </div>
 
               <div className="bio">
-                <p>
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed
-                  impedit repellendus veritatis quidem illum aut ut
-                  reprehenderit obcaecati! Temporibus, ipsa.
-                </p>
+                <p>{data?.user?.bio}</p>
               </div>
             </div>
           </>
@@ -94,7 +99,7 @@ const ViewProfile = () => {
           photo={post.photo}
           caption={post.caption}
           comments={post.comments}
-          displayPhoto={post.imageUrl}
+          displayPhoto={data?.user?.displayPhoto}
           userID={post.user}
         />
       ))}

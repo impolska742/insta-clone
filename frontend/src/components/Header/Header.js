@@ -11,6 +11,7 @@ import { BiMessageSquareAdd } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
 import { MdOutlineExplore } from "react-icons/md";
 import CreatePost from "../CreatePost/CreatePost";
+import { MdNotificationsActive } from "react-icons/md";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -65,16 +66,17 @@ const Header = () => {
                   <BiMessageSquareAdd size={30} />
                 </Nav.Link>
 
-                <CreatePost open={open} handleClose={handleClose} />
+                <Nav.Link href="#">
+                  <MdNotificationsActive size={30} />
+                </Nav.Link>
 
+                <CreatePost open={open} handleClose={handleClose} />
                 <Nav.Link href="/explore">
                   <MdOutlineExplore size={30} />
                 </Nav.Link>
-
                 <Nav.Link href={`/view-profile/${userInfo.id}`}>
                   <BsFillPersonFill size={30} />
                 </Nav.Link>
-
                 <Nav.Link href="#" onClick={logoutHandler}>
                   <FiLogOut size={30} />
                 </Nav.Link>

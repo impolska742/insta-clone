@@ -13,6 +13,9 @@ import {
   ALL_USERS_SUCCESS,
   ALL_USERS_REQUEST,
   ALL_USERS_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -131,3 +134,43 @@ export const getAllUsers = () => async (dispatch) => {
     });
   }
 };
+
+export const updateUserAction =
+  (bio, email, userName, displayPhoto, name, isPrivate) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: USER_UPDATE_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data } = await axios.patch(
+        `/api/users/update`,
+        {
+          bio,
+          userName,
+          displayPhoto,
+          name,
+          isPrivate,
+          email,
+        },
+        config
+      );
+
+      dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
+    } catch (err) {
+      dispatch({
+        type: USER_UPDATE_FAIL,
+        payload:
+          err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message,
+      });
+    }
+  };

@@ -92,9 +92,9 @@ const Post = ({
       <div className="post-header">
         <div className="d-flex">
           {displayPhoto ? (
-            <Avatar className="post-avatar" />
-          ) : (
             <Avatar className="post-avatar" src={displayPhoto} />
+          ) : (
+            <Avatar className="post-avatar" />
           )}
           <Link className="post-username-link" to={`/view-profile/${userID}`}>
             {userName}

@@ -69,11 +69,15 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
+  console.log(user);
+
   if (user) {
     user.name = req.body.name || user.name;
     user.displayPhoto = req.body.displayPhoto || user.displayPhoto;
     user.email = req.body.email || user.email;
     user.userName = req.body.userName || user.userName;
+    user.bio = req.body.bio || user.bio;
+    user.isPrivate = req.body.isPrivate || user.isPrivate;
 
     if (req.body.password) {
       user.password = req.body.password;
@@ -82,12 +86,7 @@ const updateUser = asyncHandler(async (req, res) => {
     const updatedUser = await user.save();
 
     res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      userName: updatedUser.userName,
-      email: updatedUser.email,
-      displayPhoto: updatedUser.displayPhoto,
-      token: generateToken(updatedUser._id),
+      message: "User updated successfully!!",
     });
   } else {
     res.status(404);

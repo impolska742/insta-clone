@@ -17,12 +17,14 @@ import {
   userUpdateReducer,
   userDetailsReducer,
   allUsersReducer,
+  userDeleteReducer,
 } from "./reducers/userReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userCreate: userCreateReducer,
   userUpdate: userUpdateReducer,
+  userDelete: userDeleteReducer,
   allPosts: getAllPostsReducer,
   particularPost: getPostReducer,
   postCreate: postCreateReducer,
