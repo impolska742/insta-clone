@@ -1,4 +1,7 @@
 import {
+  ALL_USERS_FAIL,
+  ALL_USERS_REQUEST,
+  ALL_USERS_SUCCESS,
   USER_CREATE_FAIL,
   USER_CREATE_REQUEST,
   USER_CREATE_SUCCESS,
@@ -63,6 +66,19 @@ export const userDetailsReducer = (state = {}, action) => {
       return { loading: false, error: action.payload, success: false };
     case USER_DETAIL_SUCCESS:
       return { loading: false, data: action.payload, success: true };
+    default:
+      return state;
+  }
+};
+
+export const allUsersReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ALL_USERS_REQUEST:
+      return { loading: true };
+    case ALL_USERS_FAIL:
+      return { loading: false, error: action.payload, success: false };
+    case ALL_USERS_SUCCESS:
+      return { loading: false, users: action.payload, success: true };
     default:
       return state;
   }

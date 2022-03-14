@@ -20,6 +20,7 @@ const UserSchema = mongoose.Schema({
   },
   bio: {
     type: String,
+    default: "",
   },
   password: {
     type: String,
@@ -27,7 +28,7 @@ const UserSchema = mongoose.Schema({
   },
   displayPhoto: {
     type: String,
-    default: process.env.TEMP_IMAGE,
+    default: "",
   },
   isAdmin: {
     type: Boolean,

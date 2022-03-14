@@ -17,10 +17,8 @@ const sendFollowRequest = asyncHandler(async (req, res) => {
   if (alreadyFollowing) {
     res.status(400);
     throw new Error(
-      `${requester.name ? requester.name : requester.userName} and 
-      ${
-        recipient.name ? recipient.name : recipient.userName
-      } are already friends.`
+      `You are already following 
+      ${recipient.name ? recipient.name : recipient.userName}.`
     );
   } else if (!requester || !recipient) {
     res.status(400);

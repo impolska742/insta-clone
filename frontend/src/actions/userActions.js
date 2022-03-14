@@ -10,6 +10,9 @@ import {
   USER_DETAIL_REQUEST,
   USER_DETAIL_SUCCESS,
   USER_DETAIL_FAIL,
+  ALL_USERS_SUCCESS,
+  ALL_USERS_REQUEST,
+  ALL_USERS_FAIL,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -97,6 +100,30 @@ export const getUserDetails = (id) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: USER_DETAIL_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
+
+export const getAllUsers = () => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_USERS_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/`, config);
+
+    dispatch({ type: ALL_USERS_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({
+      type: ALL_USERS_FAIL,
       payload:
         err.response && err.response.data.message
           ? err.response.data.message

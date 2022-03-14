@@ -34,7 +34,7 @@ const LandingPageRow = ({ row, landingPage = false, explore = false }) => {
 
         {explore && (
           <button
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/explore")}
             type="button"
             class="btn btn-outline-light"
           >

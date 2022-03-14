@@ -64,8 +64,10 @@ const Header = () => {
                 <Nav.Link href="#" onClick={handleOpen}>
                   <BiMessageSquareAdd size={30} />
                 </Nav.Link>
+
                 <CreatePost open={open} handleClose={handleClose} />
-                <Nav.Link href="#">
+
+                <Nav.Link href="/explore">
                   <MdOutlineExplore size={30} />
                 </Nav.Link>
 

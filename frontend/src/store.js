@@ -16,6 +16,7 @@ import {
   userCreateReducer,
   userUpdateReducer,
   userDetailsReducer,
+  allUsersReducer,
 } from "./reducers/userReducers";
 
 const reducer = combineReducers({
@@ -29,6 +30,7 @@ const reducer = combineReducers({
   postUpdate: postUpdateReducer,
   userDetail: userDetailsReducer,
   addComment: addCommentReducer,
+  allUsers: allUsersReducer,
   deleteComment: deleteCommentReducer,
 });
 
