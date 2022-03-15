@@ -3,7 +3,12 @@ import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./LandingPageRow.css";
 
-const LandingPageRow = ({ row, landingPage = false, explore = false }) => {
+const LandingPageRow = ({
+  row,
+  landingPage = false,
+  explore = false,
+  notifications = false,
+}) => {
   const { image, heading, subHeading } = row;
 
   let navigate = useNavigate();
@@ -18,14 +23,14 @@ const LandingPageRow = ({ row, landingPage = false, explore = false }) => {
             <button
               onClick={() => navigate("/login")}
               type="button"
-              class="btn btn-outline-secondary login-btn"
+              className="btn btn-outline-secondary login-btn"
             >
               Login
             </button>
             <button
               onClick={() => navigate("/register")}
               type="button"
-              class="btn btn-outline-light"
+              className="btn btn-outline-light"
             >
               Sign-Up
             </button>
@@ -36,9 +41,19 @@ const LandingPageRow = ({ row, landingPage = false, explore = false }) => {
           <button
             onClick={() => navigate("/explore")}
             type="button"
-            class="btn btn-outline-light"
+            className="btn btn-outline-light"
           >
             Explore
+          </button>
+        )}
+
+        {notifications && (
+          <button
+            onClick={() => navigate("/feed")}
+            type="button"
+            className="btn btn-outline-light"
+          >
+            Home
           </button>
         )}
       </Col>

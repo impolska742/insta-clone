@@ -87,8 +87,6 @@ const Post = ({
     }
   };
 
-  console.log(comments);
-
   return (
     <div className="post-container">
       <div className="post-header">

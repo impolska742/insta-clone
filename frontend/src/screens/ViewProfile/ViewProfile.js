@@ -11,6 +11,7 @@ import Post from "../Post/Post";
 import EditProfile from "../../components/EditProfile/EditProfile";
 import CreatePost from "../../components/CreatePost/CreatePost";
 import {
+  alreadyFollowingAction,
   checkSentFollowRequestAction,
   sendFollowRequestAction,
 } from "../../actions/followerActions";
@@ -41,15 +42,28 @@ const ViewProfile = () => {
   );
 
   const {
-    success: checkSentFollowRequestSuccess,
     loading: checkSentFollowRequestLoading,
     error: checkSentFollowRequestError,
+    status: checkSentFollowRequestStatus,
   } = checkSentFollowRequest;
+
+  const checkAlreadyFollowing = useSelector(
+    (state) => state.checkAlreadyFollowing
+  );
+
+  const {
+    loading: checkAlreadyFollowingLoading,
+    error: checkAlreadyFollowingError,
+    status: checkAlreadyFollowingStatus,
+  } = checkAlreadyFollowing;
 
   useEffect(() => {
     dispatch(getUserDetails(id));
     dispatch(checkSentFollowRequestAction(id));
+    dispatch(alreadyFollowingAction(id));
   }, [dispatch, id]);
+
+  console.log(checkAlreadyFollowingStatus);
 
   const sendFollowRequest = useSelector((state) => state.sendFollowRequest);
   const {
@@ -108,31 +122,46 @@ const ViewProfile = () => {
                   </>
                 ) : (
                   <>
-                    {checkSentFollowRequestLoading ? (
-                      <Loading />
+                    {checkAlreadyFollowingLoading && <Loading />}
+
+                    {checkAlreadyFollowingStatus ? (
+                      <>
+                        <button
+                          type="button"
+                          id="edit-profile-btn"
+                          className="btn btn-success btn-sm"
+                        >
+                          Following
+                        </button>
+                      </>
                     ) : (
                       <>
-                        {checkSentFollowRequestSuccess ? (
-                          <button
-                            type="button"
-                            id="edit-profile-btn"
-                            className="btn btn-success btn-sm"
-                          >
-                            Follow Request Sent
-                          </button>
+                        {checkSentFollowRequestLoading ? (
+                          <Loading />
                         ) : (
-                          <button
-                            type="button"
-                            id="edit-profile-btn"
-                            className="btn btn-success btn-sm"
-                            onClick={() => followRequest(data?.user?._id)}
-                          >
-                            Follow
-                          </button>
+                          <>
+                            {checkSentFollowRequestStatus ? (
+                              <button
+                                type="button"
+                                id="edit-profile-btn"
+                                className="btn btn-success btn-sm"
+                              >
+                                Follow Request Sent
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                id="edit-profile-btn"
+                                className="btn btn-success btn-sm"
+                                onClick={() => followRequest(data?.user?._id)}
+                              >
+                                Follow
+                              </button>
+                            )}
+                          </>
                         )}
                       </>
                     )}
-
                     {checkSentFollowRequestError && (
                       <ErrorMessage error={checkSentFollowRequestError} />
                     )}
@@ -143,6 +172,9 @@ const ViewProfile = () => {
                     )}
                     {followRequestSuccess && (
                       <Success success={"Request sent successfully."} />
+                    )}
+                    {checkAlreadyFollowingError && (
+                      <ErrorMessage error={checkAlreadyFollowingError} />
                     )}
                   </>
                 )}
@@ -185,13 +217,21 @@ const ViewProfile = () => {
           />
         ))
       ) : (
-        <Container className=" user-profile posts-not-found">
-          <h3 className="">Click here to make your first post.</h3>
-          <button onClick={handleOpen2} className="btn btn-dark">
-            Create Post
-          </button>
-          <CreatePost open={open2} handleClose={handleClose2} />
-        </Container>
+        <>
+          {userInfo.userName === data?.user?.userName ? (
+            <Container className=" user-profile posts-not-found">
+              <h3 className="">Click here to make your first post.</h3>
+              <button onClick={handleOpen2} className="btn btn-dark">
+                Create Post
+              </button>
+              <CreatePost open={open2} handleClose={handleClose2} />
+            </Container>
+          ) : (
+            <Container className=" user-profile posts-not-found">
+              <h3 className="">No Posts found.</h3>
+            </Container>
+          )}
+        </>
       )}
     </Container>
   );

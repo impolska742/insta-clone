@@ -43,12 +43,14 @@ const createPost = asyncHandler(async (req, res) => {
   }
 
   const userName = user.userName;
+  const displayPhoto = user.displayPhoto;
 
   const post = await Post.create({
     photo,
     caption,
     user,
     userName,
+    displayPhoto,
   });
 
   if (post) {

@@ -3,6 +3,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import {
   acceptFollowRequestReducer,
+  allFollowRequestReducer,
+  checkAlreadyFollowingReducer,
   checkSentFollowRequestReducer,
   rejectFollowRequestReducer,
   sendFollowRequestReducer,
@@ -44,6 +46,8 @@ const reducer = combineReducers({
   acceptFollowRequest: acceptFollowRequestReducer,
   rejectFollowRequest: rejectFollowRequestReducer,
   checkSentFollowRequest: checkSentFollowRequestReducer,
+  checkAlreadyFollowing: checkAlreadyFollowingReducer,
+  allFollowRequests: allFollowRequestReducer,
 });
 
 const userInfo = localStorage.getItem("userInfo")

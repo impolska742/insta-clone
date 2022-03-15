@@ -20,6 +20,8 @@ const Feed = () => {
   const allPosts = useSelector((state) => state.allPosts);
   const { loading, error, posts } = allPosts;
 
+  console.log(posts);
+
   useEffect(() => {
     dispatch(getAllPosts());
     if (!userInfo) {
@@ -34,14 +36,14 @@ const Feed = () => {
         posts?.map((post) => {
           return (
             <Post
-              key={post._id}
-              postID={post._id}
+              key={post?._id}
+              postID={post?._id}
               userName={post?.userName}
               photo={post.photo}
               caption={post.caption}
               comments={post.comments}
-              displayPhoto={post.imageUrl}
               userID={post.user}
+              displayPhoto={post?.displayPhoto}
             />
           );
         })

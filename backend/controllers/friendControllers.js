@@ -53,10 +53,21 @@ const getAllFollowRequests = asyncHandler(async (req, res) => {
     recipient: req.user,
   });
 
+  let temp_requests = [];
+
+  for (const request of requests) {
+    const sender = await User.findById(request.requester);
+    const curr_request = {
+      _id: request._id,
+      sender: sender,
+    };
+    temp_requests.push(curr_request);
+  }
+
   if (requests) {
     res.status(201);
     res.json({
-      requests: requests,
+      requests: temp_requests,
     });
   } else {
     res.status(404);
@@ -126,7 +137,7 @@ const checkSentRequest = asyncHandler(async (req, res) => {
   const recipient = await User.findById(userID);
 
   if (recipient) {
-    const request = await FollowRequest.find({
+    const request = await FollowRequest.findOne({
       requester: req.user,
       recipient: recipient,
     });
@@ -146,6 +157,23 @@ const checkSentRequest = asyncHandler(async (req, res) => {
   }
 });
 
+const checkAlreadyFollowing = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    const me = await User.findById(req.user._id);
+
+    const alreadyFollowing = me.friends.includes(req.params.id);
+
+    res.status(201).json({
+      alreadyFollowing: alreadyFollowing,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found.");
+  }
+});
+
 module.exports = {
   sendFollowRequest,
   getAllFriendsPosts,
@@ -153,4 +181,5 @@ module.exports = {
   rejectFollowRequest,
   getAllFollowRequests,
   checkSentRequest,
+  checkAlreadyFollowing,
 };

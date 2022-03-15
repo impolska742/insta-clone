@@ -2,6 +2,12 @@ import {
   ACCEPT_FOLLOW_FAIL,
   ACCEPT_FOLLOW_REQUEST,
   ACCEPT_FOLLOW_SUCCESS,
+  ALL_REQUESTS_FAIL,
+  ALL_REQUESTS_REQUEST,
+  ALL_REQUESTS_SUCCESS,
+  ALREADY_FOLLOWING_FAIL,
+  ALREADY_FOLLOWING_REQUEST,
+  ALREADY_FOLLOWING_SUCCESS,
   CHECK_SENT_FAIL,
   CHECK_SENT_REQUEST,
   CHECK_SENT_SUCCESS,
@@ -31,7 +37,7 @@ export const acceptFollowRequestReducer = (state = {}, action) => {
     case ACCEPT_FOLLOW_REQUEST:
       return { loading: true };
     case ACCEPT_FOLLOW_SUCCESS:
-      return { loading: false, success: true };
+      return { loading: false, success: true, message: action.payload };
     case ACCEPT_FOLLOW_FAIL:
       return { loading: false, error: action.payload, success: false };
     default:
@@ -57,8 +63,34 @@ export const checkSentFollowRequestReducer = (state = {}, action) => {
     case CHECK_SENT_REQUEST:
       return { loading: true };
     case CHECK_SENT_SUCCESS:
-      return { loading: false, success: true };
+      return { loading: false, success: true, status: action.payload };
     case CHECK_SENT_FAIL:
+      return { loading: false, error: action.payload, success: false };
+    default:
+      return state;
+  }
+};
+
+export const checkAlreadyFollowingReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ALREADY_FOLLOWING_REQUEST:
+      return { loading: true };
+    case ALREADY_FOLLOWING_SUCCESS:
+      return { loading: false, success: true, status: action.payload };
+    case ALREADY_FOLLOWING_FAIL:
+      return { loading: false, error: action.payload, success: false };
+    default:
+      return state;
+  }
+};
+
+export const allFollowRequestReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ALL_REQUESTS_REQUEST:
+      return { loading: true };
+    case ALL_REQUESTS_SUCCESS:
+      return { loading: false, success: true, requests: action.payload };
+    case ALL_REQUESTS_FAIL:
       return { loading: false, error: action.payload, success: false };
     default:
       return state;

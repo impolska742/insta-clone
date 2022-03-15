@@ -9,3 +9,9 @@ export const row2 = {
   heading: "Oops. No posts found.",
   subHeading: "Go to the explore section.",
 };
+
+export const row3 = {
+  image: require("./images/3.svg").default,
+  heading: "No new notifications found.",
+  subHeading: "Go to the feed.",
+};
