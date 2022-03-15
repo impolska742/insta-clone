@@ -105,6 +105,11 @@
   max-height: 300px;
 }
 
+.small {
+  max-width: 150px;
+  max-height: 150px;
+}
+
 #delete-comment-btn {
   padding: 3px 15px;
 }

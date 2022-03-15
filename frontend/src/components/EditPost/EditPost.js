@@ -65,7 +65,7 @@ const EditPost = ({
         </Typography>
         <hr />
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formFile" className="mb-3">
+          <Form.Group className="mb-3">
             <Form.Control
               type="file"
               onChange={(e) =>
@@ -76,7 +76,7 @@ const EditPost = ({
           {prevPhoto && (
             <img src={prevPhoto} alt="post" className="post-preview-image" />
           )}
-          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+          <Form.Group className="mb-3">
             <Form.Label>Caption.</Form.Label>
             <Form.Control
               as="textarea"

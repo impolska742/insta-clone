@@ -87,6 +87,8 @@ const Post = ({
     }
   };
 
+  console.log(comments);
+
   return (
     <div className="post-container">
       <div className="post-header">
@@ -141,10 +143,10 @@ const Post = ({
         <span className="post-caption">{caption}</span>
       </h5>
       <hr className="hrr" />
-      {comments.map(({ comment, userName, _id }) => (
+      {comments.map(({ comment, userName, _id, userId }) => (
         <div key={_id} className="comment">
           <div className="d-flex">
-            <Link className="post-username-link" to={`/view-profile/${userID}`}>
+            <Link className="post-username-link" to={`/view-profile/${userId}`}>
               <strong>{userName} </strong>
             </Link>
             <span>{comment}</span>
@@ -170,10 +172,7 @@ const Post = ({
       {addCommentLoading && <Loading />}
 
       <Form onSubmit={postComment}>
-        <Form.Group
-          className="post__commentBox"
-          controlId="exampleForm.ControlInput1"
-        >
+        <Form.Group className="post__commentBox">
           <Form.Control
             type="text"
             id="comment-input"

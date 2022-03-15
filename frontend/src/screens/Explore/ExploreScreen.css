@@ -1,4 +1,22 @@
 .explore-avatar {
-  max-height: 100px !important;
-  max-width: 100px !important;
+  max-height: 60px !important;
+  max-width: 60px !important;
+  margin-right: 20px;
+}
+
+.user {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.user:hover {
+  background-color: grey;
+}
+
+.username {
+  margin: 0;
+  padding: 0;
 }

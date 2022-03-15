@@ -2,6 +2,12 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import {
+  acceptFollowRequestReducer,
+  checkSentFollowRequestReducer,
+  rejectFollowRequestReducer,
+  sendFollowRequestReducer,
+} from "./reducers/followersReducers";
+import {
   addCommentReducer,
   deleteCommentReducer,
   getAllPostsReducer,
@@ -34,6 +40,10 @@ const reducer = combineReducers({
   addComment: addCommentReducer,
   allUsers: allUsersReducer,
   deleteComment: deleteCommentReducer,
+  sendFollowRequest: sendFollowRequestReducer,
+  acceptFollowRequest: acceptFollowRequestReducer,
+  rejectFollowRequest: rejectFollowRequestReducer,
+  checkSentFollowRequest: checkSentFollowRequestReducer,
 });
 
 const userInfo = localStorage.getItem("userInfo")

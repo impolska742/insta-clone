@@ -104,11 +104,16 @@ const getParticularPost = asyncHandler(async (req, res) => {
 const addComment = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.params.id);
   const userName = req.user.userName;
+  const userId = req.user._id;
   const { comment } = req.body;
 
   if (post) {
     if (comment) {
-      post.comments.push({ comment: comment, userName: userName });
+      post.comments.push({
+        comment: comment,
+        userName: userName,
+        userId: userId,
+      });
       await post.save();
     } else {
       throw new Error("Please enter a comment.");

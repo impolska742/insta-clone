@@ -13,6 +13,7 @@ const PostSchema = mongoose.Schema(
       {
         comment: String,
         userName: String,
+        userId: mongoose.Schema.Types.ObjectId,
       },
     ],
     userName: {

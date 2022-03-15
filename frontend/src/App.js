@@ -8,6 +8,7 @@ import Feed from "./screens/Feed/Feed";
 import ViewProfile from "./screens/ViewProfile/ViewProfile";
 import ChatBox from "./screens/Chat/ChatBox";
 import ExploreScreen from "./screens/Explore/ExploreScreen";
+import NotificationScreen from "./screens/NotificationScreen/NotificationScreen";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/view-profile/:id" element={<ViewProfile />} />
           <Route path="/chat" element={<ChatBox />} />
           <Route path="/explore" element={<ExploreScreen />} />
+          <Route path="/notifications" element={<NotificationScreen />} />
         </Routes>
       </div>
     </BrowserRouter>

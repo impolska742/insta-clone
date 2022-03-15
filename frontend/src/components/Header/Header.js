@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import { Container, Form, FormControl, Nav, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,11 +67,12 @@ const Header = () => {
                   <BiMessageSquareAdd size={30} />
                 </Nav.Link>
 
-                <Nav.Link href="#">
+                <Nav.Link href="/notifications">
                   <MdNotificationsActive size={30} />
                 </Nav.Link>
 
                 <CreatePost open={open} handleClose={handleClose} />
+
                 <Nav.Link href="/explore">
                   <MdOutlineExplore size={30} />
                 </Nav.Link>

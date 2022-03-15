@@ -40,7 +40,7 @@ const sendFollowRequest = asyncHandler(async (req, res) => {
     });
 
     if (request) {
-      res.status(201).json({ request: request });
+      res.status(201).json({ message: "Follow Request sent!" });
     } else {
       res.status(400);
       throw new Error("Error occurred while creating new request.");
@@ -121,10 +121,36 @@ const getAllFriendsPosts = asyncHandler(async (req, res) => {
   }
 });
 
+const checkSentRequest = asyncHandler(async (req, res) => {
+  const userID = req.params.id;
+  const recipient = await User.findById(userID);
+
+  if (recipient) {
+    const request = await FollowRequest.find({
+      requester: req.user,
+      recipient: recipient,
+    });
+
+    if (request) {
+      res.status(201).json({
+        requestStatus: true,
+      });
+    } else {
+      res.status(201).json({
+        requestStatus: false,
+      });
+    }
+  } else {
+    res.status(404);
+    throw new Error("User not found.");
+  }
+});
+
 module.exports = {
   sendFollowRequest,
   getAllFriendsPosts,
   acceptFollowRequest,
   rejectFollowRequest,
   getAllFollowRequests,
+  checkSentRequest,
 };

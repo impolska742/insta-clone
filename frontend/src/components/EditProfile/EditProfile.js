@@ -73,7 +73,7 @@ const EditProfile = ({
           </Form.Group>
 
           {photo && (
-            <img src={photo} alt="post" className="post-preview-image" />
+            <img src={photo} alt="post" className="post-preview-image small" />
           )}
 
           {photoMessage && <ErrorMessage>{photoMessage}</ErrorMessage>}

@@ -9,23 +9,58 @@ import ErrorMessage from "../../components/ErrorMessage";
 import "./ViewProfile.css";
 import Post from "../Post/Post";
 import EditProfile from "../../components/EditProfile/EditProfile";
+import CreatePost from "../../components/CreatePost/CreatePost";
+import {
+  checkSentFollowRequestAction,
+  sendFollowRequestAction,
+} from "../../actions/followerActions";
+import Success from "../../components/Success";
 
 const ViewProfile = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [open2, setOpen2] = useState(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
+
   const { id } = useParams();
 
   const dispatch = useDispatch();
 
+  const userLogin = useSelector((state) => state.userLogin);
+
+  const { userInfo } = userLogin;
+
   const userDetail = useSelector((state) => state.userDetail);
   const { loading, error, data } = userDetail;
 
-  console.log(data);
+  const checkSentFollowRequest = useSelector(
+    (state) => state.checkSentFollowRequest
+  );
+
+  const {
+    success: checkSentFollowRequestSuccess,
+    loading: checkSentFollowRequestLoading,
+    error: checkSentFollowRequestError,
+  } = checkSentFollowRequest;
 
   useEffect(() => {
     dispatch(getUserDetails(id));
+    dispatch(checkSentFollowRequestAction(id));
   }, [dispatch, id]);
+
+  const sendFollowRequest = useSelector((state) => state.sendFollowRequest);
+  const {
+    loading: followRequestLoading,
+    error: followRequestError,
+    success: followRequestSuccess,
+  } = sendFollowRequest;
+
+  const followRequest = (id) => {
+    dispatch(sendFollowRequestAction(id));
+  };
 
   return (
     <Container>
@@ -48,25 +83,69 @@ const ViewProfile = () => {
             <div className="user-details">
               <div className="username-box d-flex">
                 <h3 id="username">{data?.user?.userName}</h3>
-                <button
-                  type="button"
-                  id="edit-profile"
-                  className="btn btn-dark btn-sm"
-                  onClick={handleOpen}
-                >
-                  Edit Profile
-                </button>
 
-                <EditProfile
-                  open={open}
-                  handleClose={handleClose}
-                  prevBio={data?.user?.bio}
-                  prevName={data?.user?.name}
-                  prevPhoto={data?.user?.displayPhoto}
-                  prevUserName={data?.user?.userName}
-                  prevIsPrivate={data?.user?.isPrivate}
-                  prevEmail={data?.user?.email}
-                />
+                {userInfo.userName === data?.user?.userName ? (
+                  <>
+                    <button
+                      type="button"
+                      id="edit-profile"
+                      className="btn btn-dark btn-sm"
+                      onClick={handleOpen}
+                    >
+                      Edit Profile
+                    </button>
+
+                    <EditProfile
+                      open={open}
+                      handleClose={handleClose}
+                      prevBio={data?.user?.bio}
+                      prevName={data?.user?.name}
+                      prevPhoto={data?.user?.displayPhoto}
+                      prevUserName={data?.user?.userName}
+                      prevIsPrivate={data?.user?.isPrivate}
+                      prevEmail={data?.user?.email}
+                    />
+                  </>
+                ) : (
+                  <>
+                    {checkSentFollowRequestLoading ? (
+                      <Loading />
+                    ) : (
+                      <>
+                        {checkSentFollowRequestSuccess ? (
+                          <button
+                            type="button"
+                            id="edit-profile-btn"
+                            className="btn btn-success btn-sm"
+                          >
+                            Follow Request Sent
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            id="edit-profile-btn"
+                            className="btn btn-success btn-sm"
+                            onClick={() => followRequest(data?.user?._id)}
+                          >
+                            Follow
+                          </button>
+                        )}
+                      </>
+                    )}
+
+                    {checkSentFollowRequestError && (
+                      <ErrorMessage error={checkSentFollowRequestError} />
+                    )}
+
+                    {followRequestLoading && <Loading />}
+                    {followRequestError && (
+                      <ErrorMessage error={followRequestError} />
+                    )}
+                    {followRequestSuccess && (
+                      <Success success={"Request sent successfully."} />
+                    )}
+                  </>
+                )}
               </div>
               <div className="user-stats d-flex">
                 <div className="user-stat">
@@ -91,18 +170,29 @@ const ViewProfile = () => {
           </>
         )}
       </div>
-      {data?.posts?.map((post) => (
-        <Post
-          key={post?._id}
-          postID={post?._id}
-          userName={post?.userName}
-          photo={post.photo}
-          caption={post.caption}
-          comments={post.comments}
-          displayPhoto={data?.user?.displayPhoto}
-          userID={post.user}
-        />
-      ))}
+      <hr />
+      {data?.posts?.length ? (
+        data?.posts?.map((post) => (
+          <Post
+            key={post?._id}
+            postID={post?._id}
+            userName={post?.userName}
+            photo={post.photo}
+            caption={post.caption}
+            comments={post.comments}
+            displayPhoto={data?.user?.displayPhoto}
+            userID={post.user}
+          />
+        ))
+      ) : (
+        <Container className=" user-profile posts-not-found">
+          <h3 className="">Click here to make your first post.</h3>
+          <button onClick={handleOpen2} className="btn btn-dark">
+            Create Post
+          </button>
+          <CreatePost open={open2} handleClose={handleClose2} />
+        </Container>
+      )}
     </Container>
   );
 };

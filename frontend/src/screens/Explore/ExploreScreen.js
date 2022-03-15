@@ -6,6 +6,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
 import Avatar from "@mui/material/Avatar";
 import "./ExploreScreen.css";
+import { useNavigate } from "react-router-dom";
 
 const ExploreScreen = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,12 @@ const ExploreScreen = () => {
     dispatch(getAllUsers());
   }, [dispatch]);
 
+  let navigate = useNavigate();
+
+  const handleSubmit = (id) => {
+    navigate(`/view-profile/${id}`);
+  };
+
   return (
     <Container>
       {loading && <Loading />}
@@ -25,7 +32,11 @@ const ExploreScreen = () => {
       <div className="users-container">
         {users?.users?.map((user) => {
           return (
-            <div key={user._id}>
+            <div
+              onClick={() => handleSubmit(user._id)}
+              className="user"
+              key={user._id}
+            >
               {user.displayPhoto ? (
                 <Avatar
                   className="explore-avatar"
@@ -38,7 +49,10 @@ const ExploreScreen = () => {
                   sx={{ width: 200, height: 200 }}
                 />
               )}
-              <p>{user.userName}</p>
+              <div>
+                <h4>{user.userName}</h4>
+                <p className="username">{user.name}</p>
+              </div>
             </div>
           );
         })}

@@ -14,6 +14,7 @@ const {
   rejectFollowRequest,
   getAllFollowRequests,
   getAllFriendsPosts,
+  checkSentRequest,
 } = require("../controllers/friendControllers");
 
 const { protect } = require("../middlewares/authMiddleware");
@@ -32,5 +33,6 @@ router.route("/friend-request/all").get(protect, getAllFollowRequests);
 router.route("/friend-request/send/:id").post(protect, sendFollowRequest);
 router.route("/friend-request/accept/:id").post(protect, acceptFollowRequest);
 router.route("/friend-request/reject/:id").post(protect, rejectFollowRequest);
+router.route("/friend-request/check/:id").get(protect, checkSentRequest);
 
 module.exports = router;
