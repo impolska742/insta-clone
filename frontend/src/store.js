@@ -6,6 +6,7 @@ import {
   allFollowRequestReducer,
   checkAlreadyFollowingReducer,
   checkSentFollowRequestReducer,
+  getFollowingReducer,
   rejectFollowRequestReducer,
   sendFollowRequestReducer,
 } from "./reducers/followersReducers";
@@ -48,6 +49,7 @@ const reducer = combineReducers({
   checkSentFollowRequest: checkSentFollowRequestReducer,
   checkAlreadyFollowing: checkAlreadyFollowingReducer,
   allFollowRequests: allFollowRequestReducer,
+  getFollowing: getFollowingReducer,
 });
 
 const userInfo = localStorage.getItem("userInfo")

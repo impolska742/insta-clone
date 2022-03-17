@@ -12,6 +12,9 @@ import {
   CHECK_SENT_FAIL,
   CHECK_SENT_REQUEST,
   CHECK_SENT_SUCCESS,
+  GET_FOLLOWING_FAIL,
+  GET_FOLLOWING_REQUEST,
+  GET_FOLLOWING_SUCCESS,
   REJECT_FOLLOW_FAIL,
   REJECT_FOLLOW_REQUEST,
   REJECT_FOLLOW_SUCCESS,
@@ -236,6 +239,40 @@ export const alreadyFollowingAction = (id) => async (dispatch, getState) => {
         : error.message;
     dispatch({
       type: ALREADY_FOLLOWING_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const getUserFollowingAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: GET_FOLLOWING_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/user-friends`, config);
+
+    dispatch({
+      type: GET_FOLLOWING_SUCCESS,
+      payload: data.friends,
+    });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({
+      type: GET_FOLLOWING_FAIL,
       payload: message,
     });
   }

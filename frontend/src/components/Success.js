@@ -1,12 +1,28 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Success = ({ success }) => {
+  const [show, setShow] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // console.log("This will run after 1 second!");
+      setShow(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
   return (
-    <div class="alert alert-dismissible alert-success">
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      <strong>{success}</strong>
-    </div>
+    <>
+      {show && (
+        <div class="alert alert-dismissible alert-success">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+          ></button>
+          <strong>{success}</strong>
+        </div>
+      )}
+    </>
   );
 };
 

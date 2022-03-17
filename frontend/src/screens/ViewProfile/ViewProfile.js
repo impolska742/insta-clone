@@ -15,7 +15,6 @@ import {
   checkSentFollowRequestAction,
   sendFollowRequestAction,
 } from "../../actions/followerActions";
-import Success from "../../components/Success";
 
 const ViewProfile = () => {
   const [open, setOpen] = useState(false);
@@ -57,24 +56,19 @@ const ViewProfile = () => {
     status: checkAlreadyFollowingStatus,
   } = checkAlreadyFollowing;
 
+  const sendFollowRequest = useSelector((state) => state.sendFollowRequest);
+  const { loading: followRequestLoading, error: followRequestError } =
+    sendFollowRequest;
+
+  const followRequest = (id) => {
+    dispatch(sendFollowRequestAction(id));
+  };
+
   useEffect(() => {
     dispatch(getUserDetails(id));
     dispatch(checkSentFollowRequestAction(id));
     dispatch(alreadyFollowingAction(id));
   }, [dispatch, id]);
-
-  console.log(checkAlreadyFollowingStatus);
-
-  const sendFollowRequest = useSelector((state) => state.sendFollowRequest);
-  const {
-    loading: followRequestLoading,
-    error: followRequestError,
-    success: followRequestSuccess,
-  } = sendFollowRequest;
-
-  const followRequest = (id) => {
-    dispatch(sendFollowRequestAction(id));
-  };
 
   return (
     <Container>
@@ -145,6 +139,7 @@ const ViewProfile = () => {
                                 type="button"
                                 id="edit-profile-btn"
                                 className="btn btn-success btn-sm"
+                                disabled={true}
                               >
                                 Follow Request Sent
                               </button>
@@ -165,13 +160,9 @@ const ViewProfile = () => {
                     {checkSentFollowRequestError && (
                       <ErrorMessage error={checkSentFollowRequestError} />
                     )}
-
                     {followRequestLoading && <Loading />}
                     {followRequestError && (
                       <ErrorMessage error={followRequestError} />
-                    )}
-                    {followRequestSuccess && (
-                      <Success success={"Request sent successfully."} />
                     )}
                     {checkAlreadyFollowingError && (
                       <ErrorMessage error={checkAlreadyFollowingError} />

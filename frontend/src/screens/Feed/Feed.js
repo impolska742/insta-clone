@@ -20,8 +20,6 @@ const Feed = () => {
   const allPosts = useSelector((state) => state.allPosts);
   const { loading, error, posts } = allPosts;
 
-  console.log(posts);
-
   useEffect(() => {
     dispatch(getAllPosts());
     if (!userInfo) {

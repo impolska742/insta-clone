@@ -11,6 +11,9 @@ import {
   CHECK_SENT_FAIL,
   CHECK_SENT_REQUEST,
   CHECK_SENT_SUCCESS,
+  GET_FOLLOWING_FAIL,
+  GET_FOLLOWING_REQUEST,
+  GET_FOLLOWING_SUCCESS,
   REJECT_FOLLOW_FAIL,
   REJECT_FOLLOW_REQUEST,
   REJECT_FOLLOW_SUCCESS,
@@ -91,6 +94,19 @@ export const allFollowRequestReducer = (state = {}, action) => {
     case ALL_REQUESTS_SUCCESS:
       return { loading: false, success: true, requests: action.payload };
     case ALL_REQUESTS_FAIL:
+      return { loading: false, error: action.payload, success: false };
+    default:
+      return state;
+  }
+};
+
+export const getFollowingReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_FOLLOWING_REQUEST:
+      return { loading: true };
+    case GET_FOLLOWING_SUCCESS:
+      return { loading: false, success: true, friends: action.payload };
+    case GET_FOLLOWING_FAIL:
       return { loading: false, error: action.payload, success: false };
     default:
       return state;
