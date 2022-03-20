@@ -1,0 +1,25 @@
+.chat-friend {
+  display: flex;
+  height: 60px;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  padding: 0px 15px;
+}
+
+.chat-friend:hover,
+.chat-friend:focus {
+  background-color: #5f5d5d;
+}
+
+.friend-container {
+  height: 85vh;
+  max-width: 360px;
+  border-right: 1px solid gray;
+  overflow-y: scroll;
+  flex: 0.3;
+}
+
+.chat-avatar {
+  margin-right: 10px;
+}

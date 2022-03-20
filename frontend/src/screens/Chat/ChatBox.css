@@ -1,4 +1,7 @@
 .chat-box {
+  display: flex;
   border: 1px solid gray;
   height: 100%;
+  padding: 0px !important;
+  min-height: 85vh;
 }

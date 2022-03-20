@@ -57,8 +57,11 @@ const ViewProfile = () => {
   } = checkAlreadyFollowing;
 
   const sendFollowRequest = useSelector((state) => state.sendFollowRequest);
-  const { loading: followRequestLoading, error: followRequestError } =
-    sendFollowRequest;
+  const {
+    loading: followRequestLoading,
+    error: followRequestError,
+    success: followRequestSuccess,
+  } = sendFollowRequest;
 
   const followRequest = (id) => {
     dispatch(sendFollowRequestAction(id));
@@ -68,7 +71,7 @@ const ViewProfile = () => {
     dispatch(getUserDetails(id));
     dispatch(checkSentFollowRequestAction(id));
     dispatch(alreadyFollowingAction(id));
-  }, [dispatch, id]);
+  }, [dispatch, id, followRequestSuccess]);
 
   return (
     <Container>

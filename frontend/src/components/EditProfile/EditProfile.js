@@ -46,7 +46,6 @@ const EditProfile = ({
   const { loading, error, message } = userUpdate;
 
   const handleSubmit = () => {
-    console.log(bio, email, userName, photo, name, isPrivate);
     dispatch(updateUserAction(bio, email, userName, photo, name, isPrivate));
   };
 

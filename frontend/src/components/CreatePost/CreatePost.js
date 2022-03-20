@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading";
 import { createPost } from "../../actions/postActions";
 import { postDetails } from "../../util";
+import Success from "../Success";
 
 const style = {
   position: "absolute",
@@ -38,10 +39,8 @@ const CreatePost = ({ open, handleClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!photo || !caption) return;
     dispatch(createPost(photo, caption));
-
     resetFields();
   };
 
@@ -85,16 +84,7 @@ const CreatePost = ({ open, handleClose }) => {
           <Button variant="outline-light" onClick={resetFields}>
             Reset Fields
           </Button>
-          {success && (
-            <div class="alert alert-dismissible alert-success">
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-              ></button>
-              <strong>Post Created Successfully.</strong>
-            </div>
-          )}
+          {success && <Success success={"Post Created Successfully."} />}
           {loading && <Loading />}
           {photoMessage && <ErrorMessage error={photoMessage} />}
           {error && <ErrorMessage error={error} />}
