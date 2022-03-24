@@ -3,9 +3,15 @@ import React from "react";
 import "./FriendsList.css";
 import Loading from "../Loading";
 import ErrorMessage from "../ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
-const FriendsList = ({ chat, setChat, error, success, loading, friends }) => {
-  const openChat = () => {};
+const FriendsList = ({ error, success, loading, friends }) => {
+  const navigate = useNavigate();
+
+  const openChat = (id) => {
+    navigate(`/chat/${id}`);
+  };
+
   return (
     <div className="friend-container">
       {loading && <Loading />}
@@ -14,7 +20,11 @@ const FriendsList = ({ chat, setChat, error, success, loading, friends }) => {
         <>
           {friends?.map((friend) => {
             return (
-              <div onClick={openChat} className="chat-friend" key={friend._id}>
+              <div
+                onClick={() => openChat(friend._id)}
+                className="chat-friend"
+                key={friend._id}
+              >
                 {friend?.displayPhoto ? (
                   <Avatar
                     className="chat-avatar"

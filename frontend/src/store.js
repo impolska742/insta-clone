@@ -29,6 +29,11 @@ import {
   userDeleteReducer,
 } from "./reducers/userReducers";
 
+import {
+  getConversationReducer,
+  sendMessageReducer,
+} from "./reducers/conversationReducers";
+
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userCreate: userCreateReducer,
@@ -50,6 +55,8 @@ const reducer = combineReducers({
   checkAlreadyFollowing: checkAlreadyFollowingReducer,
   allFollowRequests: allFollowRequestReducer,
   getFollowing: getFollowingReducer,
+  getConversation: getConversationReducer,
+  sendMessage: sendMessageReducer,
 });
 
 const userInfo = localStorage.getItem("userInfo")

@@ -5,7 +5,6 @@ const Success = ({ success }) => {
   const [show, setShow] = useState(true);
   useEffect(() => {
     const timer = setTimeout(() => {
-      // console.log("This will run after 1 second!");
       setShow(false);
     }, 1500);
     return () => clearTimeout(timer);

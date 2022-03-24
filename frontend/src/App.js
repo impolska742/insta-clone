@@ -21,7 +21,8 @@ function App() {
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/view-profile/:id" element={<ViewProfile />} />
-          <Route path="/chat" element={<ChatBox />} />
+          <Route path="/chat/:id" element={<ChatBox chatOpen={true} />} />
+          <Route path="/chat" element={<ChatBox chatOpen={false} />} />
           <Route path="/explore" element={<ExploreScreen />} />
           <Route path="/notifications" element={<NotificationScreen />} />
         </Routes>
