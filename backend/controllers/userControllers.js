@@ -69,7 +69,6 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  console.log(user);
 
   if (user) {
     user.name = req.body.name || user.name;
@@ -109,7 +108,6 @@ const getUserDetails = asyncHandler(async (req, res) => {
 
 const getUserFriends = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  console.log(user);
 
   let userFriends = [];
 

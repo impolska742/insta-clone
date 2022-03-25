@@ -1,5 +1,5 @@
-const Message = require("../models/MessageModel");
 const asyncHandler = require("express-async-handler");
+const Message = require("../models/MessageModel");
 const User = require("../models/UserModel");
 const Conversation = require("../models/ConversationModel");
 
@@ -72,4 +72,33 @@ const sendMessage = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getConversation, sendMessage, getAllConversations };
+const getConversationMessages = asyncHandler(async (req, res) => {
+  try {
+    // console.log(req.conversation);
+    if (req.conversation) {
+      let chatMessages = [];
+
+      for (const message of req.conversation.messages) {
+        const currMessage = await Message.findById(message);
+        chatMessages.push(currMessage);
+      }
+
+      res.status(201).json({
+        messages: chatMessages,
+      });
+    } else {
+      res.status(404);
+      throw new Error("Conversation not found.");
+    }
+  } catch (error) {
+    res.status(404);
+    throw new Error("Conversation not found.");
+  }
+});
+
+module.exports = {
+  getConversation,
+  sendMessage,
+  getAllConversations,
+  getConversationMessages,
+};

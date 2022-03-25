@@ -18,8 +18,6 @@ const Chat = ({ chatOpen }) => {
     error: getConversationError,
   } = getConversation;
 
-  console.log(conversation);
-
   useEffect(() => {
     if (chatOpen) {
       dispatch(getConversationAction(id));

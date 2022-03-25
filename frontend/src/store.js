@@ -30,6 +30,7 @@ import {
 } from "./reducers/userReducers";
 
 import {
+  getConversationMessagesReducer,
   getConversationReducer,
   sendMessageReducer,
 } from "./reducers/conversationReducers";
@@ -56,6 +57,7 @@ const reducer = combineReducers({
   allFollowRequests: allFollowRequestReducer,
   getFollowing: getFollowingReducer,
   getConversation: getConversationReducer,
+  getConversationMessages: getConversationMessagesReducer,
   sendMessage: sendMessageReducer,
 });
 

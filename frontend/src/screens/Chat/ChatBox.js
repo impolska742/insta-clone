@@ -24,7 +24,7 @@ const ChatBox = ({ chatOpen }) => {
         error={error}
         success={success}
       />
-      <Chat chatOpen={chatOpen} />
+      <Chat chatOpen={chatOpen} openChat={true} />
     </Container>
   );
 };

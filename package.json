@@ -24,6 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.1",
     "nodemon": "^2.0.15",
-    "react-top-loading-bar": "^2.1.0"
+    "react-top-loading-bar": "^2.1.0",
+    "socket.io": "^4.4.1"
   }
 }

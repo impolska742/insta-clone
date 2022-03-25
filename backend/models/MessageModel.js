@@ -16,7 +16,7 @@ const MessageModel = mongoose.Schema(
       type: String,
     },
     media: {
-      type: Buffer,
+      type: String,
     },
   },
   {
