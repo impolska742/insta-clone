@@ -21,7 +21,7 @@ const {
 const { protect } = require("../middlewares/authMiddleware");
 const router = express.Router();
 
-router.route("/").get(getAllUsers);
+router.route("/").get(protect, getAllUsers);
 router.route("/user-friends").get(protect, getUserFriends);
 router.route("/friends-posts").get(protect, getAllFriendsPosts);
 router.route("/:id").get(getUserDetails);

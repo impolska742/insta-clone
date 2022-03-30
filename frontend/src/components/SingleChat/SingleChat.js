@@ -49,6 +49,12 @@ const SingleChat = ({ conversation }) => {
     socket.on("connection", () => setSocketConnected(true));
   }, [dispatch, id, userInfo]);
 
+  useEffect(() => {
+    // socket.on("message received", (newMessageReceived) => {
+    //   if()
+    // })
+  }, []);
+
   return (
     <div className="single-chat">
       <div className="single-chat-header">Header</div>

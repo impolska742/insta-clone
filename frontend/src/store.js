@@ -19,6 +19,7 @@ import {
   postDeleteReducer,
   postUpdateReducer,
 } from "./reducers/postReducers";
+import { accessChatReducer } from "./reducers/chatReducers";
 
 import {
   userLoginReducer,
@@ -27,13 +28,8 @@ import {
   userDetailsReducer,
   allUsersReducer,
   userDeleteReducer,
+  searchUsersReducer,
 } from "./reducers/userReducers";
-
-import {
-  getConversationMessagesReducer,
-  getConversationReducer,
-  sendMessageReducer,
-} from "./reducers/conversationReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -56,9 +52,8 @@ const reducer = combineReducers({
   checkAlreadyFollowing: checkAlreadyFollowingReducer,
   allFollowRequests: allFollowRequestReducer,
   getFollowing: getFollowingReducer,
-  getConversation: getConversationReducer,
-  getConversationMessages: getConversationMessagesReducer,
-  sendMessage: sendMessageReducer,
+  searchUsers: searchUsersReducer,
+  accessChat: accessChatReducer,
 });
 
 const userInfo = localStorage.getItem("userInfo")

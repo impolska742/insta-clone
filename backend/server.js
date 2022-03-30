@@ -5,7 +5,7 @@ const connectDB = require("./config/db");
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware.js");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
-const conversationRoutes = require("./routes/conversationRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 
 const app = express();
 
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
-app.use("/api/conversation", conversationRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
@@ -47,10 +47,5 @@ io.on("connection", (socket) => {
   socket.on("setup", (userData) => {
     socket.join(userData.id);
     socket.emit("connected");
-  });
-
-  socket.on("join chat", (room) => {
-    socket.join(room);
-    console.log("User joined room " + room);
   });
 });

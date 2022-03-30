@@ -2,6 +2,9 @@ import {
   ALL_USERS_FAIL,
   ALL_USERS_REQUEST,
   ALL_USERS_SUCCESS,
+  SEARCH_USERS_FAIL,
+  SEARCH_USERS_REQUEST,
+  SEARCH_USERS_SUCCESS,
   USER_CREATE_FAIL,
   USER_CREATE_REQUEST,
   USER_CREATE_SUCCESS,
@@ -94,6 +97,19 @@ export const allUsersReducer = (state = {}, action) => {
     case ALL_USERS_FAIL:
       return { loading: false, error: action.payload, success: false };
     case ALL_USERS_SUCCESS:
+      return { loading: false, users: action.payload, success: true };
+    default:
+      return state;
+  }
+};
+
+export const searchUsersReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SEARCH_USERS_REQUEST:
+      return { loading: true };
+    case SEARCH_USERS_FAIL:
+      return { loading: false, error: action.payload, success: false };
+    case SEARCH_USERS_SUCCESS:
       return { loading: false, users: action.payload, success: true };
     default:
       return state;

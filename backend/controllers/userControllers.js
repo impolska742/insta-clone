@@ -4,13 +4,17 @@ const asyncHandler = require("express-async-handler");
 const generateToken = require("../utils/generateToken");
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find();
-  if (users) {
-    res.status(201).json({ users: users });
-  } else {
-    res.status(404);
-    throw new Error("No users found.");
-  }
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+
+  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  res.send(users);
 });
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -107,22 +111,17 @@ const getUserDetails = asyncHandler(async (req, res) => {
 });
 
 const getUserFriends = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  let userFriends = [];
-
-  for (const friend of req.user.friends) {
-    const currFriend = await User.findById(friend);
-    userFriends.push(currFriend);
-  }
-
-  if (userFriends) {
+  const user = await User.findById(req.user._id).populate(
+    "friends",
+    "-password"
+  );
+  if (user.friends) {
     res.status(201).json({
-      friends: userFriends,
+      friends: user.friends,
     });
   } else {
     res.status(404);
-    throw new Error("Oof loner. No users found.");
+    throw new Error("No users found.");
   }
 });
 

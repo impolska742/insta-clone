@@ -11,10 +11,10 @@ const ErrorMessage = ({ error }) => {
   return (
     <>
       {show && (
-        <div class="alert alert-dismissible alert-danger">
+        <div className="alert alert-dismissible alert-danger">
           <button
             type="button"
-            class="btn-close"
+            className="btn-close"
             data-bs-dismiss="alert"
           ></button>
           <strong>{error}</strong>{" "}

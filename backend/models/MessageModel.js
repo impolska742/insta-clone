@@ -7,16 +7,15 @@ const MessageModel = mongoose.Schema(
       ref: "User",
       required: true,
     },
-    reciever: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
     content: {
       type: String,
     },
     media: {
       type: String,
+    },
+    chat: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Chat",
     },
   },
   {

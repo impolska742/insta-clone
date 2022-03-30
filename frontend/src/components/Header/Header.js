@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import { Container, Form, FormControl, Nav, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";

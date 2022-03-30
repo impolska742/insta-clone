@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import "./LoginScreen.css";

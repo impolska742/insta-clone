@@ -128,6 +128,7 @@ const EditProfile = ({
                 variant="danger"
                 type="submit"
                 style={{ marginRight: 10 }}
+                disabled={true}
               >
                 Delete Account
               </Button>
