@@ -2,6 +2,13 @@ import { Box, Modal, Typography } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { searchUserAction } from "../../actions/userActions";
+import { createGroupChatAction } from "../../actions/chatActions";
+import Loading from "../Loading";
+import UserBadgeItem from "../UserListItem/UserBadgeItem";
+import UserListItem from "../UserListItem/UserListItem";
+import ErrorMessage from "../ErrorMessage";
 
 const style = {
   position: "absolute",
@@ -16,9 +23,60 @@ const style = {
 
 const CreateGroupChat = ({ open, handleClose }) => {
   const [groupChatName, setGroupChatName] = useState("");
-  const [selectedUsers, setSelectedUsers] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState("");
+  const [groupChatError, setGroupChatError] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const dispatch = useDispatch();
+  const searchUsers = useSelector((state) => state.searchUsers);
+
+  const {
+    loading: searchUsersLoading,
+    error: searchUsersError,
+    users: searchUsersUsers,
+    success: searchUsersSuccess,
+  } = searchUsers;
+
+  const createGroupChat = useSelector((state) => state.createGroupChat);
+
+  const {
+    loading: createGroupChatLoading,
+    error: createGroupChatError,
+    chat: createGroupChatChat,
+    success: createGroupChatSuccess,
+  } = createGroupChat;
+
+  const handleSearch = (query) => {
+    if (!query) {
+      return;
+    }
+    setSearch(query);
+    dispatch(searchUserAction(search));
+    if (searchUsersUsers) {
+      setSearchResults(searchUsersUsers);
+    }
+  };
+
+  const handleGroup = (userToAdd) => {
+    if (!selectedUsers.includes(userToAdd)) {
+      setSelectedUsers([...selectedUsers, userToAdd]);
+    }
+  };
+
+  const handleDelete = (userToDelete) => {
+    setSelectedUsers(
+      selectedUsers.filter((user) => user._id !== userToDelete._id)
+    );
+  };
+
+  const handleSubmit = () => {
+    if (!groupChatName || !selectedUsers) {
+      setGroupChatError("Please fill all the desired fields");
+      return;
+    }
+
+    dispatch(createGroupChatAction(groupChatName, selectedUsers));
+  };
 
   return (
     <Modal
@@ -32,7 +90,7 @@ const CreateGroupChat = ({ open, handleClose }) => {
           Create Group Chat
         </Typography>
         <hr />
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Control
               type="text"
@@ -45,16 +103,34 @@ const CreateGroupChat = ({ open, handleClose }) => {
             <Form.Control
               type="text"
               placeholder="Add Users. E.g : John, Michael, Zack etc."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => handleSearch(e.target.value)}
             />
-            {/* Selected results */}
-            {/* Render searched results */}
+            {searchUsersLoading && <Loading />}
+            {selectedUsers.map((user) => {
+              return (
+                <UserBadgeItem
+                  key={user._id}
+                  bg="primary"
+                  user={user}
+                  handleFunction={() => handleDelete(user)}
+                />
+              );
+            })}
+            {searchResults?.slice(0, 4).map((user) => {
+              return (
+                <UserListItem
+                  key={user._id}
+                  user={user}
+                  handleFunction={() => handleGroup(user)}
+                />
+              );
+            })}
           </Form.Group>
 
           <Button variant="primary" type="submit">
             Submit
           </Button>
+          {groupChatError && <ErrorMessage error={groupChatError} />}
         </Form>
       </Box>
     </Modal>

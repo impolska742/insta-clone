@@ -3,8 +3,8 @@ import React from "react";
 
 const UserListItem = ({ user, handleFunction }) => {
   return (
-    <div onClick={handleFunction}>
-      <Avatar src={user.displayPhoto} />
+    <div className="chat-friend" onClick={handleFunction}>
+      <Avatar className="chat-avatar" src={user.displayPhoto} />
       <p>{user.name}</p>
     </div>
   );

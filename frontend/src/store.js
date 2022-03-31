@@ -19,7 +19,11 @@ import {
   postDeleteReducer,
   postUpdateReducer,
 } from "./reducers/postReducers";
-import { accessChatReducer } from "./reducers/chatReducers";
+import {
+  accessChatReducer,
+  createGroupChatReducer,
+  fetchChatsReducer,
+} from "./reducers/chatReducers";
 
 import {
   userLoginReducer,
@@ -54,6 +58,8 @@ const reducer = combineReducers({
   getFollowing: getFollowingReducer,
   searchUsers: searchUsersReducer,
   accessChat: accessChatReducer,
+  fetchChats: fetchChatsReducer,
+  createGroupChat: createGroupChatReducer,
 });
 
 const userInfo = localStorage.getItem("userInfo")

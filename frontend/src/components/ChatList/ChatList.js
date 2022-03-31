@@ -7,7 +7,10 @@ import "./ChatList.css";
 import { useSelector, useDispatch } from "react-redux";
 import { searchUserAction } from "../../actions/userActions";
 import UserListItem from "../UserListItem/UserListItem";
-import { accessChatAction } from "../../actions/chatActions";
+import { accessChatAction, fetchChatsAction } from "../../actions/chatActions";
+import { useEffect } from "react";
+import { getSender } from "../../util";
+import { Avatar } from "@mui/material";
 
 const options = {
   name: "Search Users",
@@ -15,20 +18,52 @@ const options = {
   backdrop: true,
 };
 
-const ChatList = () => {
+const ChatList = ({ selectedChat, setSelectedChat }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
+  const fetchChats = useSelector((state) => state.fetchChats);
+
+  const {
+    chats,
+    loading: fetchChatsLoading,
+    error: fetchChatsError,
+  } = fetchChats;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  useEffect(() => {
+    dispatch(fetchChatsAction());
+  }, [dispatch]);
 
   return (
-    <div className="chatlist-container ">
+    <div className="chatlist-container">
       <header className="chatlist-header">
         <div className="chatlist-header-buttons d-flex">
-          <button onClick={handleOpen}>Group Chat</button>
+          <Button variant="primary" onClick={handleOpen} className="me-2">
+            Group Chat
+          </Button>
           <CreateGroupChat open={open} handleClose={handleClose} />
-          <button>Single Chat</button>
           <OffCanvasExample {...options} />
         </div>
+        {fetchChatsLoading && <Loading />}
+        {fetchChatsError && <ErrorMessage error={fetchChatsError} />}
+        {chats?.map((chat) => {
+          const sender = getSender(userInfo, chat.users);
+          return (
+            <div
+              className="chat-friend"
+              key={chat._id}
+              onClick={() => setSelectedChat(chat)}
+            >
+              {!chat.isGroupChat && (
+                <Avatar className="chat-avatar" src={sender.displayPhoto} />
+              )}
+              <p>{!chat.isGroupChat ? sender.name : chat.chatName}</p>
+            </div>
+          );
+        })}
       </header>
     </div>
   );
@@ -69,7 +104,7 @@ function OffCanvasExample({ name, ...props }) {
       </Button>
       <Offcanvas show={show} onHide={handleClose} {...props}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+          <Offcanvas.Title>Users</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Form onSubmit={handleSearch}>

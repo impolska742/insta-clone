@@ -1,39 +1,74 @@
-import React, { useEffect } from "react";
+import { Avatar } from "@mui/material";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { AiFillEye, AiFillEyeInvisible, AiOutlineSend } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getConversationAction } from "../../actions/conversationActions";
-import SingleChat from "../../components/SingleChat/SingleChat";
+import { getSender } from "../../util";
 import "./Chat.css";
+import ShowProfile from "../../components/ShowUserProfile/ShowProfile";
 
-const Chat = ({ chatOpen }) => {
-  const { id } = useParams();
-
+const Chat = ({ chat }) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [message, setMessage] = useState("");
+  const [sender, setSender] = useState(null);
   const dispatch = useDispatch();
-  const getConversation = useSelector((state) => state.getConversation);
-
-  const {
-    loading: getConversationLoading,
-    success: getConversationSuccess,
-    conversation,
-    error: getConversationError,
-  } = getConversation;
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   useEffect(() => {
-    if (chatOpen) {
-      dispatch(getConversationAction(id));
+    if (!chat.isGroupChat) {
+      setSender(getSender(userInfo, chat.users));
     }
-  }, [chatOpen, dispatch, id]);
+  }, [chat.isGroupChat, chat.users, userInfo]);
 
   return (
-    <>
-      {chatOpen ? (
-        <div className="chat">
-          <SingleChat conversation={conversation} />
+    <div className="chat">
+      <div className="chat-header">
+        {chat.isGroupChat ? (
+          <strong>{chat.chatName}</strong>
+        ) : (
+          <>
+            <div className="user-info">
+              <Avatar src={sender?.displayPhoto} />
+              <strong>{sender?.name}</strong>
+            </div>
+            {open ? (
+              <AiFillEye
+                size={20}
+                style={{ cursor: "pointer" }}
+                onClick={() => setOpen(!open)}
+              />
+            ) : (
+              <AiFillEyeInvisible
+                size={20}
+                style={{ cursor: "pointer" }}
+                onClick={() => setOpen(!open)}
+              />
+            )}
+            <ShowProfile
+              open={open}
+              handleClose={handleClose}
+              handleOpen={handleOpen}
+            />
+          </>
+        )}
+      </div>
+      <div className="chat-body"></div>
+      <div className="chat-footer">
+        <div className="send-message d-flex">
+          <input
+            className="send-message-input"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            type="text"
+            placeholder="Send message."
+          />
+          <AiOutlineSend className="send-message-icon">Submit</AiOutlineSend>
         </div>
-      ) : (
-        <div className="chat">Chat</div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 

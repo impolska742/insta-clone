@@ -25,3 +25,8 @@ export const postDetails = (pics, setPhoto, setPhotoMessage) => {
     }
   }
 };
+
+export const getSender = (userInfo, users) => {
+  if (users[0]._id !== userInfo.id) return users[0];
+  else return users[1];
+};
