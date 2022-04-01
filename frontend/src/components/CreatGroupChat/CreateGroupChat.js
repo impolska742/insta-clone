@@ -30,21 +30,7 @@ const CreateGroupChat = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const searchUsers = useSelector((state) => state.searchUsers);
 
-  const {
-    loading: searchUsersLoading,
-    error: searchUsersError,
-    users: searchUsersUsers,
-    success: searchUsersSuccess,
-  } = searchUsers;
-
-  const createGroupChat = useSelector((state) => state.createGroupChat);
-
-  const {
-    loading: createGroupChatLoading,
-    error: createGroupChatError,
-    chat: createGroupChatChat,
-    success: createGroupChatSuccess,
-  } = createGroupChat;
+  const { loading: searchUsersLoading, users: searchUsersUsers } = searchUsers;
 
   const handleSearch = (query) => {
     if (!query) {

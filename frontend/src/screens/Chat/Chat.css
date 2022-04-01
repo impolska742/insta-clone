@@ -9,12 +9,18 @@
 .chat-header {
   height: 50px;
   display: flex;
-  padding: 10px 5px;
+  padding: 10px;
   align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid gray;
 }
 
 .chat-body {
   height: 100%;
+}
+
+.edit-group {
+  cursor: pointer;
 }
 
 /* Chat footer */
