@@ -8,6 +8,9 @@ import {
   CREATE_GROUP_CHAT_REQUEST,
   CREATE_GROUP_CHAT_SUCCESS,
   CREATE_GROUP_CHAT_FAIL,
+  UPDATE_GROUP_CHAT_REQUEST,
+  UPDATE_GROUP_CHAT_SUCCESS,
+  UPDATE_GROUP_CHAT_FAIL,
 } from "../constants/chatConstants";
 
 export const createGroupChatReducer = (state = {}, action) => {
@@ -17,6 +20,19 @@ export const createGroupChatReducer = (state = {}, action) => {
     case CREATE_GROUP_CHAT_SUCCESS:
       return { loading: false, success: true, chat: action.payload };
     case CREATE_GROUP_CHAT_FAIL:
+      return { loading: false, error: action.payload, success: false };
+    default:
+      return state;
+  }
+};
+
+export const updateGroupChatReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_GROUP_CHAT_REQUEST:
+      return { loading: true };
+    case UPDATE_GROUP_CHAT_SUCCESS:
+      return { loading: false, success: true, chat: action.payload };
+    case UPDATE_GROUP_CHAT_FAIL:
       return { loading: false, error: action.payload, success: false };
     default:
       return state;

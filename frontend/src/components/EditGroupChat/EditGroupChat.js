@@ -8,6 +8,11 @@ import { searchUserAction } from "../../actions/userActions";
 import UserBadgeItem from "../UserListItem/UserBadgeItem";
 import Loading from "../Loading";
 import UserListItem from "../UserListItem/UserListItem";
+import {
+  deleteGroupChatAction,
+  updateGroupChatAction,
+} from "../../actions/chatActions";
+import Success from "../Success";
 
 const style = {
   position: "absolute",
@@ -25,6 +30,7 @@ export default function BasicModal({
   handleClose,
   prevGroupName,
   prevUsers,
+  chatId,
 }) {
   const [groupName, setGroupName] = useState(prevGroupName);
   const [search, setSearch] = useState("");
@@ -32,7 +38,12 @@ export default function BasicModal({
   const [selectedUsers, setSelectedUsers] = useState(prevUsers);
 
   const searchUsers = useSelector((state) => state.searchUsers);
+  const updateGroupChat = useSelector((state) => state.updateGroupChat);
+
   const dispatch = useDispatch();
+
+  const { loading: updateGroupChatLoading, success: updateGroupChatSuccess } =
+    updateGroupChat;
 
   const { loading: searchUsersLoading, users: searchUsersUsers } = searchUsers;
 
@@ -59,6 +70,15 @@ export default function BasicModal({
     );
   };
 
+  const handleDeletegroup = () => {
+    dispatch(deleteGroupChatAction(chatId));
+  };
+
+  const handleSubmit = () => {
+    if (groupName && selectedUsers)
+      dispatch(updateGroupChatAction(chatId, groupName, selectedUsers));
+  };
+
   return (
     <Modal
       open={open}
@@ -68,15 +88,15 @@ export default function BasicModal({
     >
       <Box id="modal-box" sx={style}>
         <Typography id="modal-modal-title" variant="h4">
-          Text in a modal
+          Update Group
         </Typography>
         <hr />
         <Form>
           <Form.Group className="mb-3">
             <Form.Label>Group Name</Form.Label>
             <Form.Control
-              type="email"
-              placeholder="Enter email"
+              type="text"
+              placeholder="Enter Group Chat Name"
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
             />
@@ -112,8 +132,17 @@ export default function BasicModal({
             </Form.Group>
           </Form.Group>
 
-          <Button variant="dark" type="submit">
+          {updateGroupChatLoading && <Loading />}
+          {updateGroupChatSuccess && (
+            <Success success={"Group chat updated successfully."} />
+          )}
+
+          <Button variant="dark" type="submit" onSubmit={handleSubmit}>
             Update
+          </Button>
+
+          <Button variant="danger" type="sumbit" onClick={handleDeletegroup}>
+            Delete Group
           </Button>
         </Form>
       </Box>

@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
-const Message = require("../models/MessageModel");
 const User = require("../models/UserModel");
 const Chat = require("../models/ChatModel");
+const { path } = require("express/lib/application");
 
 const accessChat = asyncHandler(async (req, res) => {
   try {
@@ -119,15 +119,22 @@ const createGroupChat = asyncHandler(async (req, res) => {
   }
 });
 
-const renameGroup = asyncHandler(async (req, res) => {
-  const { chatId, chatName } = req.body;
+const updateGroupChat = asyncHandler(async (req, res) => {
+  const { chatId, chatName, users } = req.body;
+  const updateUsers = JSON.parse(users);
+
   const updatedChat = await Chat.findByIdAndUpdate(
     chatId,
-    { chatName },
+    { chatName, users: updateUsers },
     { new: true }
   )
     .populate("users", "-password")
     .populate("groupAdmin", "-password");
+
+  currChat = await User.populate(currChat, {
+    path: "groupAdmin.friends",
+    select: "name userName displayPhoto",
+  });
 
   if (!updatedChat) {
     res.status(404);
@@ -137,52 +144,16 @@ const renameGroup = asyncHandler(async (req, res) => {
   }
 });
 
-const addToGroup = asyncHandler(async (req, res) => {
-  const { chatId, userId } = req.body;
-  console.log(req.body);
-  const added = await Chat.findByIdAndUpdate(
-    chatId,
-    {
-      $push: { users: userId },
-    },
-    { new: true }
-  )
-    .populate("users", "-password")
-    .populate("groupAdmin", "-password");
-
-  if (!added) {
-    res.status(404);
-    throw new Error("Chat not found");
-  } else {
-    res.status(200).send(added);
-  }
-});
-
-const removeFromGroup = asyncHandler(async (req, res) => {
-  const { chatId, userId } = req.body;
-  const removed = await Chat.findByIdAndUpdate(
-    chatId,
-    {
-      $pull: { users: userId },
-    },
-    { new: true }
-  )
-    .populate("users", "-password")
-    .populate("groupAdmin", "-password");
-
-  if (!removed) {
-    res.status(404);
-    throw new Error("Chat not found");
-  } else {
-    res.status(200).send(removed);
-  }
+const deleteGroupChat = asyncHandler(async (req, res) => {
+  await Chat.findByIdAndDelete(req.params.chatId).then((result) =>
+    res.send(result)
+  );
 });
 
 module.exports = {
   accessChat,
   fetchChats,
   createGroupChat,
-  renameGroup,
-  addToGroup,
-  removeFromGroup,
+  deleteGroupChat,
+  updateGroupChat,
 };

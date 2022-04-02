@@ -22,6 +22,8 @@ const Chat = ({ chat }) => {
     }
   }, [chat.isGroupChat, chat.users, userInfo]);
 
+  console.log(chat);
+
   return (
     <div className="chat">
       <EditGroupChat
@@ -29,6 +31,7 @@ const Chat = ({ chat }) => {
         handleClose={handleClose}
         prevGroupName={chat?.chatName}
         prevUsers={chat?.users}
+        chatId={chat?._id}
       />
       <div className="chat-header">
         {chat.isGroupChat ? (

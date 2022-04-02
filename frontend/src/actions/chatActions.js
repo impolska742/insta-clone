@@ -9,6 +9,12 @@ import {
   FETCH_CHATS_FAIL,
   FETCH_CHATS_REQUEST,
   FETCH_CHATS_SUCCESS,
+  UPDATE_GROUP_CHAT_REQUEST,
+  UPDATE_GROUP_CHAT_SUCCESS,
+  UPDATE_GROUP_CHAT_FAIL,
+  DELETE_GROUP_CHAT_REQUEST,
+  DELETE_GROUP_CHAT_SUCCESS,
+  DELETE_GROUP_CHAT_FAIL,
 } from "../constants/chatConstants";
 
 export const accessChatAction = (user_id) => async (dispatch, getState) => {
@@ -105,3 +111,77 @@ export const createGroupChatAction =
       });
     }
   };
+
+export const updateGroupChatAction =
+  (chatId, chatName, chatUsers) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: UPDATE_GROUP_CHAT_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const users = JSON.stringify(chatUsers.map((u) => u._id));
+
+      console.log(users, chatName);
+
+      const { data } = await axios.put(
+        `/api/chat/update-group`,
+        {
+          chatId,
+          users,
+          chatName,
+        },
+        config
+      );
+
+      dispatch({ type: UPDATE_GROUP_CHAT_SUCCESS, payload: data });
+    } catch (err) {
+      dispatch({
+        type: UPDATE_GROUP_CHAT_FAIL,
+        payload:
+          err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message,
+      });
+    }
+  };
+
+export const deleteGroupChatAction = (chatId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: DELETE_GROUP_CHAT_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete(
+      `/api/chat/delete-group/${chatId}`,
+      config
+    );
+
+    console.log(data);
+
+    dispatch({ type: DELETE_GROUP_CHAT_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({
+      type: DELETE_GROUP_CHAT_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
