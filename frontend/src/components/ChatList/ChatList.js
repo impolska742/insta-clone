@@ -18,23 +18,21 @@ const options = {
   backdrop: true,
 };
 
-const ChatList = ({ selectedChat, setSelectedChat }) => {
+const ChatList = ({ setSelectedChat }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
+  const [chats, setChats] = useState([]);
   const fetchChats = useSelector((state) => state.fetchChats);
 
-  const {
-    chats,
-    loading: fetchChatsLoading,
-    error: fetchChatsError,
-  } = fetchChats;
+  const { loading: fetchChatsLoading, error: fetchChatsError } = fetchChats;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
   useEffect(() => {
-    dispatch(fetchChatsAction());
+    dispatch(fetchChatsAction(setChats));
   }, [dispatch]);
 
   return (

@@ -1,30 +1,13 @@
 import { Avatar } from "@mui/material";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 import {
   acceptFollowRequestAction,
   rejectFollowRequestAction,
 } from "../../actions/followerActions";
-import ErrorMessage from "../../components/ErrorMessage";
-import Loading from "../../components/Loading";
 
 const SingleNotification = ({ requestId, displayPhoto, userName, name }) => {
   const dispatch = useDispatch();
-
-  const acceptFollowRequest = useSelector((state) => state.acceptFollowRequest);
-  const rejectFollowRequest = useSelector((state) => state.rejectFollowRequest);
-
-  const {
-    loading: acceptFollowRequestLoading,
-    error: acceptFollowRequestError,
-    success: acceptFollowRequestSuccess,
-  } = acceptFollowRequest;
-
-  const {
-    loading: rejectFollowRequestLoading,
-    error: rejectFollowRequestError,
-    success: rejectFollowRequestSuccess,
-  } = rejectFollowRequest;
 
   const acceptFollowRequestSubmit = (id) => {
     dispatch(acceptFollowRequestAction(id));
@@ -32,8 +15,6 @@ const SingleNotification = ({ requestId, displayPhoto, userName, name }) => {
   const rejectFollowRequestSubmit = (id) => {
     dispatch(rejectFollowRequestAction(id));
   };
-
-  useEffect(() => {}, [acceptFollowRequestSuccess, rejectFollowRequestSuccess]);
 
   return (
     <div className="user" key={requestId}>
@@ -61,28 +42,18 @@ const SingleNotification = ({ requestId, displayPhoto, userName, name }) => {
         <button
           className="btn btn-success"
           id="edit-profile-btn"
-          onClick={() => acceptFollowRequestSubmit(requestId)}
+          onSubmit={() => acceptFollowRequestSubmit(requestId)}
         >
           Accept
         </button>
         <button
           className="btn btn-danger"
           id="edit-profile-btn"
-          onClick={() => rejectFollowRequestSubmit(requestId)}
+          onSubmit={() => rejectFollowRequestSubmit(requestId)}
         >
           Reject
         </button>
       </div>
-
-      {acceptFollowRequestLoading && <Loading />}
-      {rejectFollowRequestLoading && <Loading />}
-
-      {acceptFollowRequestError && (
-        <ErrorMessage error={acceptFollowRequestError} />
-      )}
-      {rejectFollowRequestError && (
-        <ErrorMessage error={rejectFollowRequestError} />
-      )}
     </div>
   );
 };

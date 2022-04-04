@@ -30,7 +30,7 @@ const ExploreScreen = () => {
       <h1>Users</h1>
       <hr />
       <div className="users-container">
-        {users?.users?.map((user) => {
+        {users?.map((user) => {
           return (
             <div
               onClick={() => handleSubmit(user._id)}

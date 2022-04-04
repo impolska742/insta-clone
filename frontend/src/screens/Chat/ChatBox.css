@@ -5,4 +5,5 @@
   padding: 0px !important;
   min-height: 85vh;
   border-radius: 10px;
+  overflow: hidden;
 }

@@ -11,6 +11,12 @@ import {
   UPDATE_GROUP_CHAT_REQUEST,
   UPDATE_GROUP_CHAT_SUCCESS,
   UPDATE_GROUP_CHAT_FAIL,
+  ALL_MESSAGES_REQUEST,
+  ALL_MESSAGES_SUCCESS,
+  ALL_MESSAGES_FAIL,
+  SEND_MESSAGE_REQUEST,
+  SEND_MESSAGE_SUCCESS,
+  SEND_MESSAGE_FAIL,
 } from "../constants/chatConstants";
 
 export const createGroupChatReducer = (state = {}, action) => {
@@ -71,4 +77,42 @@ export const fetchChatsReducer = (state = {}, action) => {
     default:
       return state;
   }
+};
+
+export const allMessagesReducer = (state = {}, action) => {
+  switch (action.type) {
+    case ALL_MESSAGES_REQUEST:
+      return { loading: true };
+    case ALL_MESSAGES_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        messages: action.payload,
+      };
+    case ALL_MESSAGES_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
+    default:
+      return state;
+  }
+};
+
+export const sendMessageReducer = (state = {}, action) => {
+  switch (action.type) {
+    case SEND_MESSAGE_REQUEST:
+      return { loading: true };
+    case SEND_MESSAGE_SUCCESS:
+      return { loading: false, success: true, message: action.payload };
+    case SEND_MESSAGE_FAIL:
+      return { loading: false, error: action.payload, success: false };
+    default:
+      return state;
+  }
+};
+
+export const notificationReducer = (state = {}) => {
+  return { notifications: [] };
 };

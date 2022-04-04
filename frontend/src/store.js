@@ -21,8 +21,11 @@ import {
 } from "./reducers/postReducers";
 import {
   accessChatReducer,
+  allMessagesReducer,
   createGroupChatReducer,
   fetchChatsReducer,
+  notificationReducer,
+  sendMessageReducer,
   updateGroupChatReducer,
 } from "./reducers/chatReducers";
 
@@ -62,6 +65,9 @@ const reducer = combineReducers({
   fetchChats: fetchChatsReducer,
   createGroupChat: createGroupChatReducer,
   updateGroupChat: updateGroupChatReducer,
+  allMessages: allMessagesReducer,
+  sendMessage: sendMessageReducer,
+  chatNotifications: notificationReducer,
 });
 
 const userInfo = localStorage.getItem("userInfo")

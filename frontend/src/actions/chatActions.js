@@ -15,7 +15,14 @@ import {
   DELETE_GROUP_CHAT_REQUEST,
   DELETE_GROUP_CHAT_SUCCESS,
   DELETE_GROUP_CHAT_FAIL,
+  SEND_MESSAGE_REQUEST,
+  SEND_MESSAGE_SUCCESS,
+  SEND_MESSAGE_FAIL,
+  ALL_MESSAGES_REQUEST,
+  ALL_MESSAGES_SUCCESS,
+  ALL_MESSAGES_FAIL,
 } from "../constants/chatConstants";
+import { socket } from "../socket";
 
 export const accessChatAction = (user_id) => async (dispatch, getState) => {
   try {
@@ -46,7 +53,7 @@ export const accessChatAction = (user_id) => async (dispatch, getState) => {
   }
 };
 
-export const fetchChatsAction = () => async (dispatch, getState) => {
+export const fetchChatsAction = (setChats) => async (dispatch, getState) => {
   try {
     dispatch({ type: FETCH_CHATS_REQUEST });
 
@@ -61,6 +68,8 @@ export const fetchChatsAction = () => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get(`/api/chat`, config);
+
+    setChats(data);
 
     dispatch({ type: FETCH_CHATS_SUCCESS, payload: data });
   } catch (err) {
@@ -172,8 +181,6 @@ export const deleteGroupChatAction = (chatId) => async (dispatch, getState) => {
       config
     );
 
-    console.log(data);
-
     dispatch({ type: DELETE_GROUP_CHAT_SUCCESS, payload: data });
   } catch (err) {
     dispatch({
@@ -185,3 +192,71 @@ export const deleteGroupChatAction = (chatId) => async (dispatch, getState) => {
     });
   }
 };
+
+export const sendMessageAction =
+  (chatId, content) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: SEND_MESSAGE_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.post(
+        `/api/message`,
+        { chatId, content },
+        config
+      );
+
+      socket.emit("new message", data);
+
+      dispatch({ type: SEND_MESSAGE_SUCCESS, payload: data });
+    } catch (err) {
+      dispatch({
+        type: SEND_MESSAGE_FAIL,
+        payload:
+          err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message,
+      });
+    }
+  };
+
+export const allMessagesAction =
+  (chatId, setMessages) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: ALL_MESSAGES_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.get(`/api/message/${chatId}`, config);
+
+      setMessages(data);
+
+      socket.emit("join chat", chatId);
+
+      dispatch({ type: ALL_MESSAGES_SUCCESS, payload: data });
+    } catch (err) {
+      dispatch({
+        type: ALL_MESSAGES_FAIL,
+        payload:
+          err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message,
+      });
+    }
+  };

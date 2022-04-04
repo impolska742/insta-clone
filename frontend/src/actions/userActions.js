@@ -114,17 +114,20 @@ export const getUserDetails = (id) => async (dispatch) => {
   }
 };
 
-export const getAllUsers = () => async (dispatch) => {
+export const getAllUsers = () => async (dispatch, getState) => {
   try {
     dispatch({ type: ALL_USERS_REQUEST });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
     const config = {
       headers: {
-        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
       },
     };
-
-    const { data } = await axios.get(`/api/users/`, config);
+    const { data } = await axios.get(`/api/users?search=`, config);
 
     dispatch({ type: ALL_USERS_SUCCESS, payload: data });
   } catch (err) {

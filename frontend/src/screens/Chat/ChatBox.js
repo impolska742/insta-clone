@@ -7,9 +7,9 @@ const ChatBox = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   return (
     <Container className="chat-box">
-      <ChatList selectedChat={selectedChat} setSelectedChat={setSelectedChat} />
+      <ChatList setSelectedChat={setSelectedChat} />
       {selectedChat ? (
-        <Chat chat={selectedChat} />
+        <Chat chat={selectedChat} selectedChat={selectedChat} />
       ) : (
         <div className="chat">
           <center>

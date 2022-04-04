@@ -3,6 +3,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 /* Chat header */
@@ -15,18 +16,18 @@
   border-bottom: 1px solid gray;
 }
 
-.chat-body {
-  height: 100%;
-}
-
 .edit-group {
   cursor: pointer;
 }
 
-/* Chat footer */
-.chat-footer {
-  height: 50px;
+.chat-body {
+  min-height: 520px !important;
+  max-height: 520px !important;
+  overflow-y: scroll;
 }
+
+/* Chat footer */
+
 .send-message {
   background-color: #303030;
   padding: 10px 5px;
