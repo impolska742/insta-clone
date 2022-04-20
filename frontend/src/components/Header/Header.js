@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Form, FormControl, Nav, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -17,9 +17,19 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [width, setWidth] = useState(window.innerWidth);
 
   const dispatch = useDispatch();
   let navigate = useNavigate();
+
+  const updateDimensions = () => {
+    setWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -58,28 +68,50 @@ const Header = () => {
               </Nav>
 
               <Nav id="icons-nav">
-                <Nav.Link href="/chat">
+                <Nav.Link className="d-flex toggle-header-link" href="/chat">
                   <FaFacebookMessenger size={25} />
+                  {width < 992 && <h5>Send Message</h5>}
                 </Nav.Link>
 
-                <Nav.Link href="#" onClick={handleOpen}>
+                <Nav.Link
+                  className="d-flex toggle-header-link"
+                  href="#"
+                  onClick={handleOpen}
+                >
                   <BiMessageSquareAdd size={30} />
+                  {width < 992 && <h5>Create A Post</h5>}
                 </Nav.Link>
 
-                <Nav.Link href="/notifications">
+                <Nav.Link
+                  className="d-flex toggle-header-link"
+                  href="/notifications"
+                >
                   <MdNotificationsActive size={30} />
+                  {width < 992 && <h5>Notifications</h5>}
                 </Nav.Link>
 
                 <CreatePost open={open} handleClose={handleClose} />
 
-                <Nav.Link href="/explore">
+                <Nav.Link className="d-flex toggle-header-link" href="/explore">
                   <MdOutlineExplore size={30} />
+                  {width < 992 && <h5>Explore</h5>}
                 </Nav.Link>
-                <Nav.Link href={`/view-profile/${userInfo.id}`}>
+
+                <Nav.Link
+                  className="d-flex toggle-header-link"
+                  href={`/view-profile/${userInfo.id}`}
+                >
                   <BsFillPersonFill size={30} />
+                  {width < 992 && <h5>View Profile</h5>}
                 </Nav.Link>
-                <Nav.Link href="#" onClick={logoutHandler}>
+
+                <Nav.Link
+                  className="d-flex toggle-header-link"
+                  href="#"
+                  onClick={logoutHandler}
+                >
                   <FiLogOut size={30} />
+                  {width < 992 && <h5>Logout</h5>}
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>

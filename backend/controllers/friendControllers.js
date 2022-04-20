@@ -123,6 +123,8 @@ const getAllFriendsPosts = asyncHandler(async (req, res) => {
     }
   }
 
+  allPosts.sort((a, b) => b.updatedAt - a.updatedAt);
+
   if (allPosts) {
     res.status(201);
     res.json({ posts: allPosts });

@@ -8,13 +8,18 @@ const LandingPageRow = ({
   landingPage = false,
   explore = false,
   notifications = false,
+  chatBox = false,
 }) => {
   const { image, heading, subHeading } = row;
 
   let navigate = useNavigate();
 
   return (
-    <Row className="d-flex" id="landing-page-row">
+    <Row
+      // eslint-disable-next-line no-useless-concat
+      className={"d-flex " + `${chatBox && "flex-column"}`}
+      id="landing-page-row"
+    >
       <Col className="landing-page-col">
         <h3>{heading}</h3>
         <p>{subHeading}</p>

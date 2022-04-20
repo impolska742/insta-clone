@@ -44,10 +44,21 @@
 
 #icons-nav {
   display: flex;
-  width: 220px;
   justify-content: space-between;
+  align-items: center;
 }
 
 #header-search {
   max-width: 300px;
+}
+
+.toggle-header-link {
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 992px) {
+  .toggle-header-link {
+    width: 300px;
+  }
 }

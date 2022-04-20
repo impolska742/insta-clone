@@ -1,13 +1,14 @@
 import { Avatar } from "@mui/material";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { AiFillSetting, AiOutlineSend } from "react-icons/ai";
+import { AiFillBackward, AiFillSetting, AiOutlineSend } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { getSender } from "../../util";
 import "./Chat.css";
 import EditGroupChat from "../../components/EditGroupChat/EditGroupChat";
 import {
   allMessagesAction,
+  deleteNormalChatAction,
   sendMessageAction,
 } from "../../actions/chatActions";
 import ScrollableChat from "../../components/ScrollableChat/ScrollableChat";
@@ -15,6 +16,7 @@ import { Form } from "react-bootstrap";
 import { socket } from "../../socket";
 import animationData from "../../animations/typing.json";
 import Lottie from "react-lottie";
+import { MdDeleteForever } from "react-icons/md";
 
 const defaultOptions = {
   loop: true,
@@ -25,7 +27,7 @@ const defaultOptions = {
   },
 };
 
-const Chat = ({ selectedChat, chat }) => {
+const Chat = ({ selectedChat, chat, width, showList, setShowList }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -96,8 +98,20 @@ const Chat = ({ selectedChat, chat }) => {
     dispatch(allMessagesAction(chat._id, setMessages));
   }, [chat._id, dispatch, sendMessageSuccess, selectedChat]);
 
+  const deleteCurrentChat = () => {
+    if (window.confirm("Do you want to delete this chat ?")) {
+      dispatch(deleteNormalChatAction(chat?._id));
+    }
+    window.location.reload(false);
+  };
+
   return (
-    <div className="chat">
+    <div
+      style={{
+        display: `${width < 768 ? (showList ? "none" : "block") : "block"}`,
+      }}
+      className="chat"
+    >
       <EditGroupChat
         open={open}
         handleClose={handleClose}
@@ -109,11 +123,22 @@ const Chat = ({ selectedChat, chat }) => {
         {chat.isGroupChat ? (
           <>
             <strong>{chat.chatName}</strong>
-            <AiFillSetting
-              size={25}
-              onClick={handleOpen}
-              className="edit-group"
-            />
+            <div className="d-flex align-items-center">
+              <AiFillSetting
+                className="icon-btn"
+                size={25}
+                onClick={handleOpen}
+              />
+              {width < 768 && (
+                <AiFillBackward
+                  size={30}
+                  className="icon-btn"
+                  onClick={() => setShowList(!showList)}
+                >
+                  Go Back ◀◀
+                </AiFillBackward>
+              )}
+            </div>
           </>
         ) : (
           <>
@@ -121,9 +146,26 @@ const Chat = ({ selectedChat, chat }) => {
               <Avatar className="chat-avatar" src={sender?.displayPhoto} />
               <strong>{sender?.name}</strong>
             </div>
+            <div className="d-flex align-items-center">
+              <MdDeleteForever
+                className="icon-btn"
+                size={25}
+                onClick={deleteCurrentChat}
+              />
+              {width < 768 && (
+                <AiFillBackward
+                  size={30}
+                  className="icon-btn"
+                  onClick={() => setShowList(!showList)}
+                >
+                  Go Back ◀◀
+                </AiFillBackward>
+              )}
+            </div>
           </>
         )}
       </div>
+
       <div className="chat-body">
         {!loading && (
           <ScrollableChat

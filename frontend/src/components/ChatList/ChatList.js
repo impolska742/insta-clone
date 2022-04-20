@@ -11,6 +11,7 @@ import { accessChatAction, fetchChatsAction } from "../../actions/chatActions";
 import { useEffect } from "react";
 import { getSender } from "../../util";
 import { Avatar } from "@mui/material";
+import { GrGroup } from "react-icons/gr";
 
 const options = {
   name: "Search Users",
@@ -18,7 +19,7 @@ const options = {
   backdrop: true,
 };
 
-const ChatList = ({ setSelectedChat }) => {
+const ChatList = ({ setSelectedChat, showList, width }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -36,15 +37,24 @@ const ChatList = ({ setSelectedChat }) => {
   }, [dispatch]);
 
   return (
-    <div className="chatlist-container">
+    <div
+      style={{
+        display: `${width < 768 ? (showList ? "block" : "none") : "block"}`,
+      }}
+      className="chatlist-container"
+    >
       <header className="chatlist-header">
-        <div className="chatlist-header-buttons d-flex">
-          <Button variant="primary" onClick={handleOpen} className="me-2">
-            Group Chat
-          </Button>
-          <CreateGroupChat open={open} handleClose={handleClose} />
-          <OffCanvasExample {...options} />
+        <div className="chatlist-header-top">
+          <h5 className="chatlist-header-heading">Your Chats</h5>
+          <div className="chatlist-header-buttons d-flex align-items-center">
+            <Button variant="primary" onClick={handleOpen} className="me-2">
+              Group Chat
+            </Button>
+            <CreateGroupChat open={open} handleClose={handleClose} />
+            <OffCanvasExample {...options} />
+          </div>
         </div>
+
         {fetchChatsLoading && <Loading />}
         {fetchChatsError && <ErrorMessage error={fetchChatsError} />}
         {chats?.map((chat) => {
@@ -55,8 +65,10 @@ const ChatList = ({ setSelectedChat }) => {
               key={chat._id}
               onClick={() => setSelectedChat(chat)}
             >
-              {!chat.isGroupChat && (
+              {!chat.isGroupChat ? (
                 <Avatar className="chat-avatar" src={sender.displayPhoto} />
+              ) : (
+                <GrGroup className="chat-avatar group-icon" />
               )}
               <p>{!chat.isGroupChat ? sender.name : chat.chatName}</p>
             </div>

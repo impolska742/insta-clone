@@ -16,10 +16,6 @@
   border-bottom: 1px solid gray;
 }
 
-.edit-group {
-  cursor: pointer;
-}
-
 .chat-body {
   min-height: 520px !important;
   max-height: 520px !important;
@@ -57,4 +53,21 @@
   position: absolute;
   bottom: 0px;
   right: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .chat {
+    flex: 1;
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.icon-btn {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.icon-btn:hover {
+  transform: scale(1.08);
 }

@@ -5,6 +5,7 @@
   justify-content: flex-start;
   cursor: pointer;
   padding: 0px 15px;
+  background-color: #222222;
 }
 
 .chat-friend:hover,
@@ -22,4 +23,34 @@
 
 .chat-avatar {
   margin-right: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .chatlist-container {
+    flex: 1;
+    border: none;
+    width: 100%;
+    max-width: none;
+  }
+
+  .chatlist-header-top {
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: space-between !important;
+  }
+}
+
+.chatlist-header-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
+  padding: 10px;
+  border-bottom: 1px solid #5f5d5d;
+}
+
+.group-icon {
+  background-color: rgb(255, 255, 255);
+  font-size: 2.5rem;
+  border-radius: 50%;
 }

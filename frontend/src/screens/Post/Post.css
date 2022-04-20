@@ -8,6 +8,7 @@
 
 .post-image {
   width: 100%;
+  min-width: 500px;
   max-height: 500px;
   object-fit: contain;
   border-top: 1px solid lightgray;

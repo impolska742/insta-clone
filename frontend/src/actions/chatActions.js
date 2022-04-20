@@ -15,6 +15,9 @@ import {
   DELETE_GROUP_CHAT_REQUEST,
   DELETE_GROUP_CHAT_SUCCESS,
   DELETE_GROUP_CHAT_FAIL,
+  DELETE_NORMAL_CHAT_REQUEST,
+  DELETE_NORMAL_CHAT_SUCCESS,
+  DELETE_NORMAL_CHAT_FAIL,
   SEND_MESSAGE_REQUEST,
   SEND_MESSAGE_SUCCESS,
   SEND_MESSAGE_FAIL,
@@ -192,6 +195,38 @@ export const deleteGroupChatAction = (chatId) => async (dispatch, getState) => {
     });
   }
 };
+
+export const deleteNormalChatAction =
+  (chatId) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: DELETE_NORMAL_CHAT_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.delete(
+        `/api/chat/delete-normal/${chatId}`,
+        config
+      );
+
+      dispatch({ type: DELETE_NORMAL_CHAT_SUCCESS, payload: data });
+    } catch (err) {
+      dispatch({
+        type: DELETE_NORMAL_CHAT_FAIL,
+        payload:
+          err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message,
+      });
+    }
+  };
 
 export const sendMessageAction =
   (chatId, content) => async (dispatch, getState) => {

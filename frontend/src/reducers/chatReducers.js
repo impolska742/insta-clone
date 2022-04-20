@@ -112,7 +112,3 @@ export const sendMessageReducer = (state = {}, action) => {
       return state;
   }
 };
-
-export const notificationReducer = (state = {}) => {
-  return { notifications: [] };
-};

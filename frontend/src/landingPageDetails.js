@@ -15,3 +15,9 @@ export const row3 = {
   heading: "No new notifications found.",
   subHeading: "Go to the feed.",
 };
+
+export const row4 = {
+  image: require("./images/4.svg").default,
+  heading: "Send Messages to your friends.",
+  subHeading: "Chat, explore, enjoy.",
+};

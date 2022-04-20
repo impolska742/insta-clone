@@ -150,10 +150,17 @@ const deleteGroupChat = asyncHandler(async (req, res) => {
   );
 });
 
+const deleteNormalChat = asyncHandler(async (req, res) => {
+  await Chat.findByIdAndDelete(req.params.chatId).then((result) =>
+    res.send(result)
+  );
+});
+
 module.exports = {
   accessChat,
   fetchChats,
   createGroupChat,
   deleteGroupChat,
   updateGroupChat,
+  deleteNormalChat,
 };

@@ -16,8 +16,7 @@ const allPosts = asyncHandler(async (req, res) => {
 
 const getAllUserPosts = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  const posts = await Post.find({ user: req.user });
-
+  const posts = await Post.find({ user: req.user }).sort({ updatedAt: -1 });
   if (user) {
     res.status(201).json({
       posts: posts,
