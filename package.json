@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon backend/server.js",
-    "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm start\"  \"npm run client\" "
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build -- prefix frontend"
   },
   "author": "Vaibhav Bhardwaj",
   "license": "MIT",
