@@ -3,6 +3,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../actions/userActions";
+import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
 import "../LoginScreen/LoginScreen.css";
 
@@ -81,19 +82,7 @@ const RegisterScreen = () => {
             />
           </Form.Group>
 
-          {message && (
-            <div class="alert alert-dismissible alert-danger">
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-              ></button>
-              <strong>Oh snap!</strong>{" "}
-              <a href="#" class="alert-link">
-                {message}
-              </a>
-            </div>
-          )}
+          {message && <ErrorMessage error={message} />}
 
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
@@ -122,19 +111,7 @@ const RegisterScreen = () => {
 
         {loading && <Loading />}
 
-        {error && (
-          <div class="alert alert-dismissible alert-danger">
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-            ></button>
-            <strong>Oh snap!</strong>{" "}
-            <a href="#" class="alert-link">
-              {error}
-            </a>
-          </div>
-        )}
+        {error && <ErrorMessage error={error} />}
       </Container>
 
       <Container id="second-container">

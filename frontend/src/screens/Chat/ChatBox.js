@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import ChatList from "../../components/ChatList/ChatList";
 import Chat from "./Chat";
 import "./ChatBox.css";
 const ChatBox = () => {
   const [selectedChat, setSelectedChat] = useState(null);
+  useEffect(() => {}, [selectedChat]);
   return (
     <Container className="chat-box">
       <ChatList setSelectedChat={setSelectedChat} />

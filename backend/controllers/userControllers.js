@@ -86,7 +86,7 @@ const updateUser = asyncHandler(async (req, res) => {
       user.password = req.body.password;
     }
 
-    const updatedUser = await user.save();
+    await user.save();
 
     res.json({
       message: "User updated successfully!!",
@@ -125,11 +125,24 @@ const getUserFriends = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    throw new Error("No user found.");
+  } else {
+    await user.remove();
+    res.json({
+      message: "User Deleted Successfully.",
+    });
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
   updateUser,
   getAllUsers,
+  deleteUser,
   getUserDetails,
   getUserFriends,
 };

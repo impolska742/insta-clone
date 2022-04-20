@@ -58,7 +58,6 @@ const Post = ({
   } = postDelete;
 
   const postComment = (e) => {
-    e.preventDefault();
     if (!comment) return;
     dispatch(addCommentAction(comment, postID));
     setComment("");

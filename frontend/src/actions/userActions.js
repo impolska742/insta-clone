@@ -19,6 +19,9 @@ import {
   SEARCH_USERS_REQUEST,
   SEARCH_USERS_SUCCESS,
   SEARCH_USERS_FAIL,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_FAIL,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -200,6 +203,38 @@ export const searchUserAction = (search) => async (dispatch, getState) => {
   } catch (err) {
     dispatch({
       type: SEARCH_USERS_FAIL,
+      payload:
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message,
+    });
+  }
+};
+
+export const deleteUserAction = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete("/api/users/delete", config);
+
+    dispatch({ type: USER_DELETE_SUCCESS, payload: data });
+    localStorage.removeItem("userInfo");
+    dispatch({ type: USER_LOGOUT });
+  } catch (err) {
+    dispatch({
+      type: USER_DELETE_FAIL,
       payload:
         err.response && err.response.data.message
           ? err.response.data.message

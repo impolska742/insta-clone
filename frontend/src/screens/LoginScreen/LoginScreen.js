@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../actions/userActions";
 import Loading from "../../components/Loading";
+import ErrorMessage from "../../components/ErrorMessage";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -63,19 +64,7 @@ const LoginScreen = () => {
 
         {loading && <Loading />}
 
-        {error && (
-          <div class="alert alert-dismissible alert-danger">
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-            ></button>
-            <strong>Oh snap!</strong>{" "}
-            <a href="#" class="alert-link">
-              {error}
-            </a>
-          </div>
-        )}
+        {error && <ErrorMessage error={error} />}
       </Container>
       <Container id="second-container">
         <h4>Don't have an account?</h4>

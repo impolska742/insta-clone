@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import "./NotificationScreen.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import { row3 } from "../../landingPageDetails";
 import SingleNotification from "./SingleNotification";
 
 const NotificationScreen = () => {
+  const [refresh, setRefresh] = useState(false);
   const dispatch = useDispatch();
   const allFollowRequests = useSelector((state) => state.allFollowRequests);
 
@@ -18,7 +19,7 @@ const NotificationScreen = () => {
 
   useEffect(() => {
     dispatch(getAllFollowRequestsAction());
-  }, [dispatch]);
+  }, [dispatch, refresh]);
 
   return (
     <Container>
@@ -34,6 +35,7 @@ const NotificationScreen = () => {
                 displayPhoto={request?.sender?.displayPhoto}
                 userName={request?.sender?.userName}
                 name={request?.sender?.name}
+                setRefresh={setRefresh}
               />
             );
           })}

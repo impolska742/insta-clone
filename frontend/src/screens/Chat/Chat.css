@@ -52,3 +52,9 @@
 .send-message-icon:focus {
   transform: scale(1.1);
 }
+
+.typing-animation {
+  position: absolute;
+  bottom: 0px;
+  right: auto;
+}

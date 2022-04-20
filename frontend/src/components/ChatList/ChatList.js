@@ -93,6 +93,7 @@ function OffCanvasExample({ name, ...props }) {
 
   const handleFunction = (id) => {
     dispatch(accessChatAction(id));
+    window.location.reload(false);
   };
 
   return (

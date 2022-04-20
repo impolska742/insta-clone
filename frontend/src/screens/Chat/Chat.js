@@ -10,14 +10,11 @@ import {
   allMessagesAction,
   sendMessageAction,
 } from "../../actions/chatActions";
-import Loading from "../../components/Loading";
 import ScrollableChat from "../../components/ScrollableChat/ScrollableChat";
 import { Form } from "react-bootstrap";
 import { socket } from "../../socket";
-import Lottie from "react-lottie";
 import animationData from "../../animations/typing.json";
-
-var selectedChatCompare = null;
+import Lottie from "react-lottie";
 
 const defaultOptions = {
   loop: true,
@@ -67,7 +64,7 @@ const Chat = ({ selectedChat, chat }) => {
     var timerLength = 3000;
 
     setTimeout(() => {
-      var timeNow = new Date.getTime();
+      var timeNow = new Date().getTime();
       const timeDiff = timeNow - lastTypingTime;
 
       if (timeDiff >= timerLength && typing) {
@@ -97,21 +94,7 @@ const Chat = ({ selectedChat, chat }) => {
 
   useEffect(() => {
     dispatch(allMessagesAction(chat._id, setMessages));
-    selectedChatCompare = selectedChat;
   }, [chat._id, dispatch, sendMessageSuccess, selectedChat]);
-
-  useEffect(() => {
-    socket.on("message received", (newMessageReceived) => {
-      if (
-        selectedChatCompare === null ||
-        selectedChatCompare._id !== newMessageReceived.chat._id
-      ) {
-        // give notification
-      } else {
-        setMessages([...messages, newMessageReceived]);
-      }
-    });
-  });
 
   return (
     <div className="chat">
@@ -142,8 +125,15 @@ const Chat = ({ selectedChat, chat }) => {
         )}
       </div>
       <div className="chat-body">
-        {loading ? <Loading /> : <ScrollableChat messages={messages} />}
+        {!loading && (
+          <ScrollableChat
+            isTyping={isTyping}
+            messages={messages}
+            sender={sender}
+          />
+        )}
       </div>
+
       <div className="chat-footer">
         <div className="send-message d-flex">
           <Form
@@ -151,17 +141,10 @@ const Chat = ({ selectedChat, chat }) => {
             className="d-flex"
             onSubmit={handleSubmit}
           >
-            {isTyping ? (
+            {isTyping && (
               <div>
-                <Lottie
-                  options={defaultOptions}
-                  // height={50}
-                  width={70}
-                  style={{ marginBottom: 15, marginLeft: 0 }}
-                />
+                <Lottie options={defaultOptions} width={50} />
               </div>
-            ) : (
-              <></>
             )}
             <input
               className="send-message-input"

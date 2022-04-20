@@ -1,12 +1,19 @@
 import { Avatar } from "@mui/material";
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import {
   acceptFollowRequestAction,
   rejectFollowRequestAction,
 } from "../../actions/followerActions";
 
-const SingleNotification = ({ requestId, displayPhoto, userName, name }) => {
+const SingleNotification = ({
+  requestId,
+  displayPhoto,
+  userName,
+  name,
+  setRefresh,
+}) => {
   const dispatch = useDispatch();
 
   const acceptFollowRequestSubmit = (id) => {
@@ -15,6 +22,17 @@ const SingleNotification = ({ requestId, displayPhoto, userName, name }) => {
   const rejectFollowRequestSubmit = (id) => {
     dispatch(rejectFollowRequestAction(id));
   };
+
+  const acceptFollowRequest = useSelector((state) => state.acceptFollowRequest);
+  const rejectFollowRequest = useSelector((state) => state.rejectFollowRequest);
+
+  const { success: acceptFollowRequestSuccess } = acceptFollowRequest;
+  const { success: rejectFollowRequestSuccess } = rejectFollowRequest;
+
+  useEffect(() => {
+    if (acceptFollowRequestSuccess || rejectFollowRequestSuccess)
+      setRefresh(true);
+  }, [acceptFollowRequestSuccess, rejectFollowRequestSuccess, setRefresh]);
 
   return (
     <div className="user" key={requestId}>
@@ -38,22 +56,22 @@ const SingleNotification = ({ requestId, displayPhoto, userName, name }) => {
           <p className="username">{name}</p>
         </div>
       </div>
-      <div>
+      <Form>
         <button
           className="btn btn-success"
           id="edit-profile-btn"
-          onSubmit={() => acceptFollowRequestSubmit(requestId)}
+          onClick={() => acceptFollowRequestSubmit(requestId)}
         >
           Accept
         </button>
         <button
           className="btn btn-danger"
           id="edit-profile-btn"
-          onSubmit={() => rejectFollowRequestSubmit(requestId)}
+          onClick={() => rejectFollowRequestSubmit(requestId)}
         >
           Reject
         </button>
-      </div>
+      </Form>
     </div>
   );
 };

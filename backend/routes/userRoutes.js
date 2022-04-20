@@ -6,6 +6,7 @@ const {
   getAllUsers,
   getUserDetails,
   getUserFriends,
+  deleteUser,
 } = require("../controllers/userControllers");
 
 const {
@@ -29,6 +30,7 @@ router.route("/:id").get(getUserDetails);
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/update").patch(protect, updateUser);
+router.route("/delete").delete(protect, deleteUser);
 
 router.route("/friend-request/all").get(protect, getAllFollowRequests);
 router.route("/friend-request/send/:id").post(protect, sendFollowRequest);

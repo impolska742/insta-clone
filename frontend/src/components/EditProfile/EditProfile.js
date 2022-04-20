@@ -7,8 +7,9 @@ import { postDetails } from "../../util";
 import Switch from "@mui/material/Switch";
 import ErrorMessage from "../ErrorMessage";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserAction } from "../../actions/userActions";
+import { deleteUserAction, updateUserAction } from "../../actions/userActions";
 import Loading from "../Loading";
+import { useNavigate } from "react-router-dom";
 import Success from "../Success";
 
 const style = {
@@ -41,12 +42,20 @@ const EditProfile = ({
   const [photoMessage, setPhotoMessage] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const userUpdate = useSelector((state) => state.userUpdate);
   const { loading, error, message } = userUpdate;
 
   const handleSubmit = () => {
     dispatch(updateUserAction(bio, email, userName, photo, name, isPrivate));
+  };
+
+  const handleDeleteUser = () => {
+    if (window.confirm("Do you want to permanently delete your account?")) {
+      dispatch(deleteUserAction());
+      navigate("/");
+    }
   };
 
   return (
@@ -128,7 +137,7 @@ const EditProfile = ({
                 variant="danger"
                 type="submit"
                 style={{ marginRight: 10 }}
-                disabled={true}
+                onClick={handleDeleteUser}
               >
                 Delete Account
               </Button>
