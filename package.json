@@ -4,7 +4,7 @@
   "description": "Instagram clone with CRUD features",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon backend/server.js"
+    "start": "node backend/server.js"
   },
   "author": "Vaibhav Bhardwaj",
   "license": "MIT",
