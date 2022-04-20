@@ -93,10 +93,10 @@ const EditPost = ({
             Reset Fields
           </Button>
           {postUpdateSuccess && (
-            <div class="alert alert-dismissible alert-success">
+            <div className="alert alert-dismissible alert-success">
               <button
                 type="button"
-                class="btn-close"
+                className="btn-close"
                 data-bs-dismiss="alert"
               ></button>
               <strong>Post Updated Successfully.</strong>
