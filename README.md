@@ -1,6 +1,6 @@
 # insta-clone
 
-![ezgif-5-29e886039c](https://user-images.githubusercontent.com/43564765/164446874-c13e3234-5400-4b0e-a6f7-c41a8f71a9ad.gif)
+<!-- ![ezgif-5-29e886039c](https://user-images.githubusercontent.com/43564765/164446874-c13e3234-5400-4b0e-a6f7-c41a8f71a9ad.gif) -->
 ![Screenshot (115)](https://user-images.githubusercontent.com/43564765/164446967-04dd1324-5519-41f2-995f-01e7cfd349a9.png)
 ![Screenshot (116)](https://user-images.githubusercontent.com/43564765/164446974-cc09012a-d54d-4284-9077-b94dabbe27a5.png)
 ![Screenshot (117)](https://user-images.githubusercontent.com/43564765/164446975-6a59afc3-9b76-4bba-a609-afe4a1e0e3be.png)
