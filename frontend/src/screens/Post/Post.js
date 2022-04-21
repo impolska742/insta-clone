@@ -58,6 +58,7 @@ const Post = ({
   } = postDelete;
 
   const postComment = (e) => {
+    e.preventDefault();
     if (!comment) return;
     dispatch(addCommentAction(comment, postID));
     setComment("");
@@ -140,30 +141,35 @@ const Post = ({
         <span className="post-caption">{caption}</span>
       </h5>
       <hr className="hrr" />
-      {comments.map(({ comment, userName, _id, userId }) => (
-        <div key={_id} className="comment">
-          <div className="d-flex">
-            <Link className="post-username-link" to={`/view-profile/${userId}`}>
-              <strong>{userName} </strong>
-            </Link>
-            <span>{comment}</span>
+      <div className="comments">
+        {comments.map(({ comment, userName, _id, userId }) => (
+          <div key={_id} className="comment">
+            <div className="d-flex">
+              <Link
+                className="post-username-link"
+                to={`/view-profile/${userId}`}
+              >
+                <strong>{userName} </strong>
+              </Link>
+              <span>{comment}</span>
+            </div>
+            {deleteCommentLoading && <Loading />}
+            {deleteCommentError && (
+              <ErrorMessage>{deleteCommentError}</ErrorMessage>
+            )}
+            {userInfo?.id.toString() === userID?.toString() && (
+              <button
+                type="button"
+                onClick={() => deleteCommentSubmit(_id)}
+                class="btn btn-outline-danger"
+                id="delete-comment-btn"
+              >
+                Delete
+              </button>
+            )}
           </div>
-          {deleteCommentLoading && <Loading />}
-          {deleteCommentError && (
-            <ErrorMessage>{deleteCommentError}</ErrorMessage>
-          )}
-          {userInfo?.id.toString() === userID?.toString() && (
-            <button
-              type="button"
-              onClick={() => deleteCommentSubmit(_id)}
-              class="btn btn-outline-danger"
-              id="delete-comment-btn"
-            >
-              Delete
-            </button>
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
 
       {addCommentError && <ErrorMessage>{addCommentError}</ErrorMessage>}
       {addCommentLoading && <Loading />}

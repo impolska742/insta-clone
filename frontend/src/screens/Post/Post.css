@@ -1,18 +1,17 @@
 .post-container {
   background-color: #303030;
   margin: 0 auto;
-  max-width: 500px;
   margin-bottom: 50px;
   border-radius: 10px;
+  max-width: 400px;
 }
 
 .post-image {
   width: 100%;
-  min-width: 500px;
-  max-height: 500px;
   object-fit: contain;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
+  max-height: 400px;
 }
 
 .post-header {
@@ -82,6 +81,11 @@
 
 .comment:hover {
   background-color: #222222;
+}
+
+.comments {
+  overflow-y: scroll;
+  max-height: 45px;
 }
 
 .post-username-link {

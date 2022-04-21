@@ -15,7 +15,7 @@ code {
 /* Scroll bar */
 
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-thumb {

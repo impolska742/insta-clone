@@ -1,0 +1,2 @@
+1. Change "nodemon" to "node" in package.json
+2. Change the host address in socket.js
